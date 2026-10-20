@@ -31,3 +31,4 @@ Dès qu'un fichier est complété / finalisé :
 
 > [!NOTE]
 > Pour que la commande `git push` fonctionne, un dépôt distant (`origin`) doit être configuré (par exemple : `git remote add origin <url_du_depot>` puis `git push -u origin master`).
+
