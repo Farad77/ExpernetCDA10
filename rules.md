@@ -1,4 +1,4 @@
-# Règles de gestion Git du projet
+# Règles de gestion et de développement du projet
 
 Ces règles s'appliquent automatiquement à l'assistant et aux contributeurs de ce projet.
 
@@ -35,3 +35,10 @@ Dès qu'un fichier est complété / finalisé :
   ```bash
   git push
   ```
+
+---
+
+## 3. Règles UI / UX
+- **Framework CSS / JS obligatoire** : À chaque fois qu'il faut concevoir ou modifier l'UI et l'UX, utiliser obligatoirement **Bootstrap 5.3.8** :
+  - CSS : `https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css`
+  - JS : `https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js`
