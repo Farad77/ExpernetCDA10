@@ -11,6 +11,9 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- Three.js pour le ballon de basket en 3D réel -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
     <style>
       :root {
         --system-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -369,9 +372,102 @@
         opacity: 1;
         transform: translateY(0);
       }
+
+      /* WIDGET BALLON DE BASKET 3D (ENTRÉE PLEIN ÉCRAN & DOCKING EN BAS À DROITE) */
+      .basketball-widget {
+        position: fixed;
+        z-index: 1055;
+        width: 320px;
+        height: 320px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        will-change: top, left, width, height, transform;
+        transition: box-shadow 0.3s ease;
+      }
+      .basketball-widget.docked {
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      .basketball-widget.docked:hover {
+        filter: drop-shadow(0 10px 25px rgba(227, 100, 20, 0.55));
+      }
+
+      #basketballCanvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 50%;
+      }
+
+      /* Bulle incitative au chargement */
+      .ball-scroll-hint {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: #ffffff;
+        padding: 0.5rem 1.25rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+        pointer-events: none;
+        animation: hintPulse 2.4s infinite ease-in-out;
+      }
+      @keyframes hintPulse {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-6px); }
+      }
+
+      /* Tooltip quand le ballon est ancré en bas à droite */
+      .ball-backtop-tooltip {
+        position: absolute;
+        top: -38px;
+        right: 0;
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: #ffffff;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        transform: translateY(6px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      }
+      .basketball-widget.docked:hover .ball-backtop-tooltip {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
   </head>
   <body>
+
+    <!-- BALLON DE BASKET 3D INTERACTIF (ENTRÉE AU CENTRE -> ROULE VERS LE BAS À DROITE -> BOUTON REMONTER) -->
+    <div id="basketballContainer" class="basketball-widget" title="Remonter en haut de page">
+      <canvas id="basketballCanvas"></canvas>
+      <div id="ballScrollHint" class="ball-scroll-hint">
+        <i class="bi bi-mouse me-1"></i> Faites défiler pour faire rouler le ballon
+      </div>
+      <div id="ballBackTopHint" class="ball-backtop-tooltip">
+        Haut de page <i class="bi bi-arrow-up-short"></i>
+      </div>
+    </div>
 
     <!-- BARRE DE NAVIGATION FLOTTANTE STYLE IOS TRANSPARENT -->
     <nav class="ios-nav-transparent d-flex justify-content-between align-items-center" id="mainNav">
@@ -388,7 +484,6 @@
       </div>
 
       <div class="d-flex align-items-center gap-2">
-        <!-- Bouton bascule Mode Sombre / Clair -->
         <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Basculer le mode sombre/clair" title="Changer de thème">
           <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
         </button>
@@ -629,14 +724,217 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
 
-        // 1. GESTION DU MODE SOMBRE / CLAIR AVEC CHANGEMENT D'IMAGES DYNAMIQUE
+        // ============================================================
+        // ANIMATION BALLON DE BASKET 3D EN PLEIN ÉCRAN AU SCROLL (THREE.JS)
+        // ============================================================
+        const createBasketballTexture = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 1024;
+          canvas.height = 512;
+          const ctx = canvas.getContext('2d');
+
+          // Fond orange cuir basketball
+          const grad = ctx.createLinearGradient(0, 0, 1024, 512);
+          grad.addColorStop(0, '#eb681d');
+          grad.addColorStop(0.5, '#cc520f');
+          grad.addColorStop(1, '#a63c05');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, 1024, 512);
+
+          // Texture granuleuse type cuir
+          const imgData = ctx.getImageData(0, 0, 1024, 512);
+          const data = imgData.data;
+          for (let i = 0; i < data.length; i += 4) {
+            const noise = (Math.random() - 0.5) * 22;
+            data[i] = Math.min(255, Math.max(0, data[i] + noise));
+            data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise * 0.7));
+            data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise * 0.5));
+          }
+          ctx.putImageData(imgData, 0, 0);
+
+          // Lignes noires en caoutchouc (seams du ballon)
+          ctx.strokeStyle = '#18181b';
+          ctx.lineWidth = 11;
+          ctx.lineCap = 'round';
+
+          // Équateur horizontal
+          ctx.beginPath();
+          ctx.moveTo(0, 256);
+          ctx.lineTo(1024, 256);
+          ctx.stroke();
+
+          // Méridiens verticaux
+          ctx.beginPath();
+          ctx.moveTo(256, 0);
+          ctx.lineTo(256, 512);
+          ctx.moveTo(512, 0);
+          ctx.lineTo(512, 512);
+          ctx.moveTo(768, 0);
+          ctx.lineTo(768, 512);
+          ctx.stroke();
+
+          // Arcs courbés caractéristiques
+          ctx.beginPath();
+          ctx.ellipse(256, 256, 125, 256, 0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.ellipse(768, 256, 125, 256, 0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          return canvas;
+        };
+
+        const initBasketball3D = () => {
+          const container = document.getElementById('basketballContainer');
+          const canvas = document.getElementById('basketballCanvas');
+          const scrollHint = document.getElementById('ballScrollHint');
+          if (!container || !canvas || typeof THREE === 'undefined') return;
+
+          const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+          camera.position.z = 3.2;
+
+          // Texture procédurale
+          const texCanvas = createBasketballTexture();
+          const texture = new THREE.CanvasTexture(texCanvas);
+          texture.wrapS = THREE.RepeatWrapping;
+          texture.wrapT = THREE.ClampToEdgeWrapping;
+
+          const bumpTex = new THREE.CanvasTexture(texCanvas);
+          bumpTex.wrapS = THREE.RepeatWrapping;
+          bumpTex.wrapT = THREE.ClampToEdgeWrapping;
+
+          const geometry = new THREE.SphereGeometry(1, 64, 64);
+          const material = new THREE.MeshStandardMaterial({
+            map: texture,
+            bumpMap: bumpTex,
+            bumpScale: 0.04,
+            roughness: 0.55,
+            metalness: 0.08
+          });
+
+          const ballMesh = new THREE.Mesh(geometry, material);
+          scene.add(ballMesh);
+
+          // Éclairage 3D réaliste
+          const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+          scene.add(ambientLight);
+
+          const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
+          dirLight.position.set(4, 5, 3);
+          scene.add(dirLight);
+
+          const fillLight = new THREE.DirectionalLight(0xffedd5, 0.9);
+          fillLight.position.set(-3, -2, -2);
+          scene.add(fillLight);
+
+          let prevScroll = window.scrollY;
+
+          // Mise à jour de la trajectoire du ballon selon le scroll
+          const updateBall = () => {
+            const scroll = window.scrollY;
+            const scrollDistance = 580; // Distance de défilement nécessaire pour atteindre le bas à droite
+            const progress = Math.min(scroll / scrollDistance, 1);
+
+            // Courbe d'assouplissement cubique pour une trajectoire naturelle
+            const ease = progress < 0.5
+              ? 4 * progress * progress * progress
+              : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+            const winW = window.innerWidth;
+            const winH = window.innerHeight;
+
+            // Coordonnées de départ (centre de l'écran) et d'arrivée (bas à droite)
+            const startX = winW / 2;
+            const startY = winH / 2;
+            const endX = winW - 58;
+            const endY = winH - 58;
+
+            const posX = startX + (endX - startX) * ease;
+            const posY = startY + (endY - startY) * ease;
+
+            // Échelle : de ~360px au centre jusqu'à 64px dans le coin
+            const startSize = Math.min(360, winW * 0.72);
+            const endSize = 64;
+            const currentSize = startSize + (endSize - startSize) * ease;
+
+            container.style.width = `${currentSize}px`;
+            container.style.height = `${currentSize}px`;
+            container.style.left = `${posX}px`;
+            container.style.top = `${posY}px`;
+            container.style.transform = 'translate(-50%, -50%)';
+
+            renderer.setSize(currentSize, currentSize, false);
+
+            // Gestion de l'affichage du texte incitatif au départ
+            if (progress > 0.06) {
+              if (scrollHint) {
+                scrollHint.style.opacity = '0';
+                scrollHint.style.pointerEvents = 'none';
+              }
+            } else {
+              if (scrollHint) {
+                scrollHint.style.opacity = '1';
+              }
+            }
+
+            // Statut amarré (docked) : devient bouton interactif
+            if (progress >= 0.88) {
+              container.classList.add('docked');
+            } else {
+              container.classList.remove('docked');
+            }
+
+            // Rotation dynamique liée à la vitesse de défilement
+            const delta = scroll - prevScroll;
+            ballMesh.rotation.x += delta * 0.009;
+            ballMesh.rotation.y += delta * 0.006;
+            prevScroll = scroll;
+          };
+
+          window.addEventListener('scroll', updateBall, { passive: true });
+          window.addEventListener('resize', updateBall);
+          updateBall();
+
+          // Rotation continue lente
+          const renderLoop = () => {
+            requestAnimationFrame(renderLoop);
+            ballMesh.rotation.y += 0.0035;
+            renderer.render(scene, camera);
+          };
+          renderLoop();
+
+          // Clic sur le ballon pour remonter en haut de page
+          container.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Animation rapide de rotation lors du clic
+            let spinSteps = 0;
+            const fastSpin = () => {
+              ballMesh.rotation.x -= 0.18;
+              ballMesh.rotation.y += 0.12;
+              spinSteps++;
+              if (spinSteps < 28) requestAnimationFrame(fastSpin);
+            };
+            fastSpin();
+          });
+        };
+
+        initBasketball3D();
+
+        // ============================================================
+        // GESTION DU MODE SOMBRE / CLAIR AVEC CHANGEMENT D'IMAGES DYNAMIQUE
+        // ============================================================
         const htmlElement = document.documentElement;
         const themeToggleBtn = document.getElementById('themeToggleBtn');
         const themeIcon = document.getElementById('themeIcon');
         const heroSection = document.getElementById('hero');
         const parallaxBg = document.getElementById('parallaxBg');
 
-        // Récupérer le thème sauvegardé ou la préférence système
         const savedTheme = localStorage.getItem('theme') || 
           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
@@ -646,7 +944,6 @@
 
           if (theme === 'dark') {
             themeIcon.className = 'bi bi-sun-fill text-warning';
-            // Changement d'images vers le mode sombre (nocturne / contrasté)
             if (heroSection) {
               heroSection.style.backgroundImage = `url('${heroSection.getAttribute('data-dark-bg')}')`;
             }
@@ -655,7 +952,6 @@
             }
           } else {
             themeIcon.className = 'bi bi-moon-stars-fill';
-            // Changement d'images vers le mode clair (lumineux / jour)
             if (heroSection) {
               heroSection.style.backgroundImage = `url('${heroSection.getAttribute('data-light-bg')}')`;
             }
@@ -665,26 +961,25 @@
           }
         };
 
-        // Appliquer au chargement
         applyTheme(savedTheme);
 
-        // Bascule au clic
         themeToggleBtn.addEventListener('click', () => {
           const currentTheme = htmlElement.getAttribute('data-bs-theme');
           const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
           applyTheme(newTheme);
         });
 
-        // 2. PARALLAXE FLUIDE AU SCROLL POUR LA SECTION PLEINE LARGEUR
+        // ============================================================
+        // PARALLAXE FLUIDE AU SCROLL POUR LA SECTION PLEINE LARGEUR
+        // ============================================================
         const academieSection = document.getElementById('academie');
         if (parallaxBg && academieSection) {
           const updateParallax = () => {
             const rect = academieSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             if (rect.top <= windowHeight && rect.bottom >= 0) {
-              // Calcul précis du décalage relatif au scroll
               const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
-              const yOffset = (scrollProgress - 0.5) * 120; // 120px de translation parallaxe
+              const yOffset = (scrollProgress - 0.5) * 120;
               parallaxBg.style.transform = `translate3d(0, ${yOffset}px, 0)`;
             }
           };
@@ -693,7 +988,9 @@
           updateParallax();
         }
 
-        // 3. EFFET DE REFLET DE VERRE DYNAMIQUE SUR LES BOUTONS CTA (Spotlight Mouse Tracking)
+        // ============================================================
+        // EFFET DE REFLET DE VERRE DYNAMIQUE SUR LES BOUTONS CTA
+        // ============================================================
         const interactiveCtas = document.querySelectorAll('.interactive-cta');
         interactiveCtas.forEach(cta => {
           cta.addEventListener('mousemove', (e) => {
@@ -715,7 +1012,9 @@
           });
         });
 
-        // 4. INCLINAISON 3D TILT SUR LES BADGES STATS
+        // ============================================================
+        // INCLINAISON 3D TILT SUR LES BADGES STATS
+        // ============================================================
         const tiltItems = document.querySelectorAll('.interactive-tilt');
         tiltItems.forEach(item => {
           item.addEventListener('mousemove', (e) => {
@@ -734,7 +1033,9 @@
           });
         });
 
-        // 5. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
+        // ============================================================
+        // ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
+        // ============================================================
         const animateCounters = () => {
           const counters = document.querySelectorAll('.stat-num');
           counters.forEach(counter => {
@@ -762,7 +1063,9 @@
         };
         setTimeout(animateCounters, 200);
 
-        // 6. SCROLL REVEAL VIA INTERSECTION OBSERVER
+        // ============================================================
+        // SCROLL REVEAL VIA INTERSECTION OBSERVER
+        // ============================================================
         const revealItems = document.querySelectorAll('.reveal-item');
         const revealObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
@@ -781,7 +1084,9 @@
           revealObserver.observe(item);
         });
 
-        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
+        // ============================================================
+        // ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
+        // ============================================================
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {
