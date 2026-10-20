@@ -3,23 +3,77 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Matchs Récents NBA</title>
+    <title>NBA Tracker - Derniers Matchs</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #fcfcfd;
-        color: #1a1a1a;
+      :root {
+        --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       }
+      body {
+        font-family: var(--font-sans);
+        background-color: #fdfdfd;
+        color: #1a1a1a;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      /* Hero Section plein écran / immersif */
+      .hero-section {
+        position: relative;
+        min-height: 58vh;
+        display: flex;
+        align-items: center;
+        background: 
+          linear-gradient(135deg, rgba(10, 15, 29, 0.92) 0%, rgba(15, 23, 42, 0.82) 45%, rgba(15, 23, 42, 0.45) 100%),
+          url('https://upload.wikimedia.org/wikipedia/commons/6/6e/Stephen_Curry_%2833139311636%29.jpg');
+        background-size: cover;
+        background-position: center 25%;
+        color: #ffffff;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        padding: 0.4rem 0.9rem;
+        border-radius: 50rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 4.5vw, 3.4rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 1.3vw, 1.15rem);
+        color: rgba(255, 255, 255, 0.82);
+        max-width: 680px;
+        line-height: 1.6;
+      }
+
+      /* Tableau minimaliste et fluide */
       .table-minimal {
         --bs-table-bg: transparent;
         border-collapse: separate;
         border-spacing: 0;
+        width: 100%;
       }
       .table-minimal th {
         font-size: 0.75rem;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: #6c757d;
         font-weight: 600;
@@ -33,142 +87,188 @@
       .table-minimal tbody tr:last-child td {
         border-bottom: none;
       }
+      .table-minimal tbody tr {
+        transition: background-color 0.15s ease;
+      }
       .table-minimal tbody tr:hover {
         background-color: #f8f9fa;
       }
       .score-box {
         font-variant-numeric: tabular-nums;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.02em;
       }
     </style>
   </head>
-  <body class="py-5">
-    <div class="container" style="max-width: 980px;">
-      <!-- En-tête sobre et épuré -->
-      <div class="d-flex justify-content-between align-items-baseline mb-4 pb-2 border-bottom">
-        <div>
-          <h1 class="h4 fw-semibold text-dark mb-1">Derniers matchs NBA</h1>
-          <p class="text-secondary small mb-0">Récapitulatif des récentes rencontres et performances</p>
+  <body>
+
+    <!-- Section Héro avec Stephen Curry en fond -->
+    <header class="hero-section w-100 px-3 px-md-5 py-5">
+      <div class="container-fluid px-lg-5">
+        <div class="row">
+          <div class="col-xl-8 col-lg-9 col-md-11">
+            <div class="hero-badge mb-3">
+              <span class="spinner-grow spinner-grow-sm text-warning" role="status" aria-hidden="true" style="width: 0.6rem; height: 0.6rem;"></span>
+              NBA Live Focus · Stephen Curry Edition
+            </div>
+            <h1 class="hero-title mb-3">
+              L'Art du Tir & L'Intensité des Parquets.
+            </h1>
+            <p class="hero-subtitle mb-4">
+              Précision chirurgicale, buzzer beaters et masterclass individuelles : revivez le compte-rendu des chocs récents et l'impact décisif des MVP sur chaque match.
+            </p>
+            <div class="d-flex flex-wrap gap-4 pt-2 text-white-50 small">
+              <div>
+                <span class="text-white fw-semibold d-block fs-5">5</span>
+                <span>Derniers matchs</span>
+              </div>
+              <div class="border-start border-secondary ps-4">
+                <span class="text-white fw-semibold d-block fs-5">115.6</span>
+                <span>Pts moyenne / match</span>
+              </div>
+              <div class="border-start border-secondary ps-4">
+                <span class="text-white fw-semibold d-block fs-5">35.2</span>
+                <span>Pts moyenne MVP</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <span class="text-secondary small">Saison régulière</span>
       </div>
+    </header>
 
-      <!-- Tableau épuré à 4 colonnes -->
-      <div class="table-responsive">
-        <table class="table table-minimal align-middle mb-0">
-          <thead>
-            <tr>
-              <th scope="col" class="py-3 ps-2">Équipe</th>
-              <th scope="col" class="py-3 text-center" style="width: 170px;">Points en match</th>
-              <th scope="col" class="py-3" style="width: 230px;">MVP du match</th>
-              <th scope="col" class="py-3 pe-2">Observation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="py-3 ps-2">
-                <span class="fw-semibold text-dark">Boston Celtics</span>
-                <span class="text-muted mx-1">/</span>
-                <span class="text-secondary">Golden State</span>
-              </td>
-              <td class="py-3 text-center score-box">
-                <span class="fw-semibold text-dark">118</span>
-                <span class="text-black-50 mx-1">—</span>
-                <span class="text-secondary">112</span>
-              </td>
-              <td class="py-3">
-                <div class="fw-medium text-dark">Jayson Tatum</div>
-                <div class="text-secondary small">35 pts, 8 reb</div>
-              </td>
-              <td class="py-3 pe-2 text-secondary small">
-                Écart creusé dans le 4<sup>e</sup> quart-temps avec une série de 12-2.
-              </td>
-            </tr>
+    <!-- Conteneur plein écran pour le tableau -->
+    <main class="w-100 px-3 px-md-5 py-5">
+      <div class="container-fluid px-lg-5">
+        
+        <!-- En-tête du tableau -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4 pb-3 border-bottom">
+          <div>
+            <h2 class="h5 fw-semibold text-dark mb-1">Rapports des derniers matchs</h2>
+            <p class="text-secondary small mb-0">Données officielles des rencontres récentes de la ligue</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-light text-secondary border px-3 py-2 fw-medium">
+              <i class="bi bi-calendar3 me-1"></i> Saison 2025-2026
+            </span>
+          </div>
+        </div>
 
-            <tr>
-              <td class="py-3 ps-2">
-                <span class="fw-semibold text-dark">Los Angeles Lakers</span>
-                <span class="text-muted mx-1">/</span>
-                <span class="text-secondary">Denver Nuggets</span>
-              </td>
-              <td class="py-3 text-center score-box">
-                <span class="fw-semibold text-dark">114</span>
-                <span class="text-black-50 mx-1">—</span>
-                <span class="text-secondary">108</span>
-              </td>
-              <td class="py-3">
-                <div class="fw-medium text-dark">LeBron James</div>
-                <div class="text-secondary small">28 pts, 11 ast, 9 reb</div>
-              </td>
-              <td class="py-3 pe-2 text-secondary small">
-                Quasi triple-double décisif et défense intraitable en fin de match.
-              </td>
-            </tr>
+        <!-- Tableau minimaliste à 4 colonnes en plein écran -->
+        <div class="table-responsive">
+          <table class="table table-minimal align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3 ps-2">Équipe</th>
+                <th scope="col" class="py-3 text-center" style="width: 190px;">Points en match</th>
+                <th scope="col" class="py-3" style="width: 260px;">MVP du match</th>
+                <th scope="col" class="py-3 pe-2">Observation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="py-3 ps-2">
+                  <span class="fw-semibold text-dark">Boston Celtics</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Golden State</span>
+                </td>
+                <td class="py-3 text-center score-box">
+                  <span class="fw-semibold text-dark">118</span>
+                  <span class="text-black-50 mx-1">—</span>
+                  <span class="text-secondary">112</span>
+                </td>
+                <td class="py-3">
+                  <div class="fw-medium text-dark">Jayson Tatum</div>
+                  <div class="text-secondary small">35 pts, 8 reb</div>
+                </td>
+                <td class="py-3 pe-2 text-secondary small">
+                  Écart décisif creusé dans le 4<sup>e</sup> quart-temps avec une série offensive de 12-2.
+                </td>
+              </tr>
 
-            <tr>
-              <td class="py-3 ps-2">
-                <span class="fw-semibold text-dark">Milwaukee Bucks</span>
-                <span class="text-muted mx-1">/</span>
-                <span class="text-secondary">Philadelphia 76ers</span>
-              </td>
-              <td class="py-3 text-center score-box">
-                <span class="fw-semibold text-dark">124</span>
-                <span class="text-black-50 mx-1">—</span>
-                <span class="text-secondary">117</span>
-              </td>
-              <td class="py-3">
-                <div class="fw-medium text-dark">Giannis Antetokounmpo</div>
-                <div class="text-secondary small">41 pts, 13 reb</div>
-              </td>
-              <td class="py-3 pe-2 text-secondary small">
-                Domination totale dans la raquette avec plus de 65% de réussite au tir.
-              </td>
-            </tr>
+              <tr>
+                <td class="py-3 ps-2">
+                  <span class="fw-semibold text-dark">Los Angeles Lakers</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Denver Nuggets</span>
+                </td>
+                <td class="py-3 text-center score-box">
+                  <span class="fw-semibold text-dark">114</span>
+                  <span class="text-black-50 mx-1">—</span>
+                  <span class="text-secondary">108</span>
+                </td>
+                <td class="py-3">
+                  <div class="fw-medium text-dark">LeBron James</div>
+                  <div class="text-secondary small">28 pts, 11 ast, 9 reb</div>
+                </td>
+                <td class="py-3 pe-2 text-secondary small">
+                  Quasi triple-double décisif et solide verrouillage de la raquette dans les ultimes minutes.
+                </td>
+              </tr>
 
-            <tr>
-              <td class="py-3 ps-2">
-                <span class="fw-semibold text-dark">Dallas Mavericks</span>
-                <span class="text-muted mx-1">/</span>
-                <span class="text-secondary">Phoenix Suns</span>
-              </td>
-              <td class="py-3 text-center score-box">
-                <span class="fw-semibold text-dark">120</span>
-                <span class="text-black-50 mx-1">—</span>
-                <span class="text-secondary">119</span>
-              </td>
-              <td class="py-3">
-                <div class="fw-medium text-dark">Luka Dončić</div>
-                <div class="text-secondary small">39 pts, 10 ast</div>
-              </td>
-              <td class="py-3 pe-2 text-secondary small">
-                Tir décisif à 3 points au buzzer pour sceller la victoire à l'extérieur.
-              </td>
-            </tr>
+              <tr>
+                <td class="py-3 ps-2">
+                  <span class="fw-semibold text-dark">Milwaukee Bucks</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Philadelphia 76ers</span>
+                </td>
+                <td class="py-3 text-center score-box">
+                  <span class="fw-semibold text-dark">124</span>
+                  <span class="text-black-50 mx-1">—</span>
+                  <span class="text-secondary">117</span>
+                </td>
+                <td class="py-3">
+                  <div class="fw-medium text-dark">Giannis Antetokounmpo</div>
+                  <div class="text-secondary small">41 pts, 13 reb</div>
+                </td>
+                <td class="py-3 pe-2 text-secondary small">
+                  Domination totale dans la peinture avec plus de 65% de réussite au tir sous le cercle.
+                </td>
+              </tr>
 
-            <tr>
-              <td class="py-3 ps-2">
-                <span class="fw-semibold text-dark">OKC Thunder</span>
-                <span class="text-muted mx-1">/</span>
-                <span class="text-secondary">Minnesota Timberwolves</span>
-              </td>
-              <td class="py-3 text-center score-box">
-                <span class="fw-semibold text-dark">109</span>
-                <span class="text-black-50 mx-1">—</span>
-                <span class="text-secondary">105</span>
-              </td>
-              <td class="py-3">
-                <div class="fw-medium text-dark">Shai Gilgeous-Alexander</div>
-                <div class="text-secondary small">33 pts, 6 ast</div>
-              </td>
-              <td class="py-3 pe-2 text-secondary small">
-                Match très disputé, conclu par un sans-faute sur la ligne des lancers francs.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <tr>
+                <td class="py-3 ps-2">
+                  <span class="fw-semibold text-dark">Dallas Mavericks</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Phoenix Suns</span>
+                </td>
+                <td class="py-3 text-center score-box">
+                  <span class="fw-semibold text-dark">120</span>
+                  <span class="text-black-50 mx-1">—</span>
+                  <span class="text-secondary">119</span>
+                </td>
+                <td class="py-3">
+                  <div class="fw-medium text-dark">Luka Dončić</div>
+                  <div class="text-secondary small">39 pts, 10 ast</div>
+                </td>
+                <td class="py-3 pe-2 text-secondary small">
+                  Tir clutch à 3 points au buzzer pour sceller la victoire au bout du suspense.
+                </td>
+              </tr>
+
+              <tr>
+                <td class="py-3 ps-2">
+                  <span class="fw-semibold text-dark">OKC Thunder</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Minnesota Timberwolves</span>
+                </td>
+                <td class="py-3 text-center score-box">
+                  <span class="fw-semibold text-dark">109</span>
+                  <span class="text-black-50 mx-1">—</span>
+                  <span class="text-secondary">105</span>
+                </td>
+                <td class="py-3">
+                  <div class="fw-medium text-dark">Shai Gilgeous-Alexander</div>
+                  <div class="text-secondary small">33 pts, 6 ast</div>
+                </td>
+                <td class="py-3 pe-2 text-secondary small">
+                  Duel défensif ultra engagé conclu par un 6/6 sans trembler sur la ligne des lancers francs.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </main>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
