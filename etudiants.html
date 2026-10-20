@@ -25,6 +25,8 @@
         --stat-bg: rgba(0, 0, 0, 0.35);
         --stat-border: rgba(255, 255, 255, 0.25);
         --border-subtle: #e5e7eb;
+        --modal-bg: rgba(255, 255, 255, 0.92);
+        --modal-border: rgba(255, 255, 255, 0.8);
       }
 
       [data-bs-theme="dark"] {
@@ -39,6 +41,8 @@
         --stat-bg: rgba(15, 23, 42, 0.65);
         --stat-border: rgba(255, 255, 255, 0.15);
         --border-subtle: #1f2937;
+        --modal-bg: rgba(15, 23, 42, 0.94);
+        --modal-border: rgba(255, 255, 255, 0.15);
       }
 
       html {
@@ -287,7 +291,7 @@
       }
       .table-editorial td {
         border: none;
-        padding: 1.25rem;
+        padding: 1rem 1.25rem;
         vertical-align: middle;
         background: transparent;
         transition: all 0.2s ease;
@@ -303,18 +307,33 @@
         border-bottom-right-radius: 0.85rem;
       }
 
-      .table-editorial tbody tr {
+      /* Ligne cliquable avec curseur pointeur pour ouvrir le modal */
+      .student-row {
+        cursor: pointer;
         transition: all 0.2s ease;
-        cursor: default;
       }
-      .table-editorial tbody tr:hover td {
+      .student-row:hover td {
         background-color: var(--table-row-hover);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
       }
-      .table-editorial tbody tr:hover {
+      .student-row:hover {
         transform: translateY(-2px);
+      }
+
+      /* Avatar rond des étudiants */
+      .student-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s ease;
+      }
+      .student-row:hover .student-avatar {
+        transform: scale(1.08);
       }
 
       .aptitude-bar-bg {
@@ -339,6 +358,43 @@
       .reveal-item.revealed {
         opacity: 1;
         transform: translateY(0);
+      }
+
+      /* MODAL ÉTUDIANT STYLE IOS (SANS CARDS) */
+      .modal-backdrop.show {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        background-color: rgba(0, 0, 0, 0.55);
+      }
+      .modal-content-open {
+        background: var(--modal-bg);
+        backdrop-filter: blur(28px) saturate(190%);
+        -webkit-backdrop-filter: blur(28px) saturate(190%);
+        border: 1px solid var(--modal-border);
+        border-radius: 1.75rem;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        color: var(--text-primary);
+      }
+      .modal-avatar-lg {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      }
+      .voeux-quote-box {
+        background: rgba(0, 0, 0, 0.03);
+        border-left: 3px solid #0284c7;
+        border-radius: 0.75rem;
+        padding: 1.1rem 1.35rem;
+        font-style: italic;
+        line-height: 1.65;
+      }
+      [data-bs-theme="dark"] .voeux-quote-box {
+        background: rgba(255, 255, 255, 0.04);
+        border-left-color: #38bdf8;
       }
     </style>
   </head>
@@ -384,7 +440,7 @@
             </h1>
             
             <p class="hero-standfirst mb-4">
-              Relevé officiel des 12 espoirs réunionnais suivis par l'académie régionale : profil morphologique, clubs formateurs et indices d'aptitude au tir et au jeu.
+              Relevé officiel des 12 espoirs réunionnais suivis par l'académie régionale : profil morphologique, clubs formateurs et vœux de carrière. Cliquez sur un profil pour ouvrir sa fiche détaillée.
             </p>
             
             <!-- CTA À GAUCHE -->
@@ -438,11 +494,11 @@
           <div>
             <span class="editorial-label text-secondary mb-1">Effectif Régional</span>
             <h2 class="h3 fw-bold mb-1">Liste d'Évaluation des Étudiants Réunionnais</h2>
-            <p class="text-muted small mb-0">Données de tests physiques et d'aptitude technique au panier</p>
+            <p class="text-muted small mb-0">Cliquez sur n'importe quel étudiant pour consulter sa fiche complète et ses vœux</p>
           </div>
           <div class="d-flex gap-2">
             <span class="badge border rounded-pill px-3 py-2 fw-medium">
-              <i class="bi bi-award text-primary me-1"></i> Promotion 2026
+              <i class="bi bi-cursor me-1 text-primary"></i> Cliquer pour ouvrir la fiche
             </span>
           </div>
         </div>
@@ -451,22 +507,36 @@
           <table class="table table-editorial align-middle">
             <thead>
               <tr class="reveal-item">
-                <th scope="col" style="width: 34%;">Nom & Prénoms</th>
-                <th scope="col" class="text-center" style="width: 16%;">Âge</th>
-                <th scope="col" class="text-center" style="width: 18%;">Taille</th>
-                <th scope="col" style="width: 32%;">Aptitude au basket</th>
+                <th scope="col" style="width: 36%;">Nom & Prénoms</th>
+                <th scope="col" class="text-center" style="width: 14%;">Âge</th>
+                <th scope="col" class="text-center" style="width: 16%;">Taille</th>
+                <th scope="col" style="width: 24%;">Aptitude au basket</th>
+                <th scope="col" class="text-end" style="width: 10%;">Fiche</th>
               </tr>
             </thead>
             <tbody>
               
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 1 -->
+              <tr class="reveal-item student-row"
+                data-nom="PAYET Jean-Baptiste"
+                data-poste="Arrière / Meneur polyvalent"
+                data-ville="Saint-Denis · Club formateur : Aiglons d'Orient"
+                data-age="20 ans"
+                data-taille="1m96"
+                data-aptitude="94%"
+                data-img="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Tir clutch, première foulée explosive & lecture du jeu"
+                data-voeux="Mon objectif prioritaire est d'intégrer le centre de formation d'un club de Betclic Élite (comme Cholet ou Gravelines) dès la prochaine rentrée. À moyen terme, je souhaite représenter La Réunion aux Jeux des Îles de l'Océan Indien et décrocher un contrat professionnel en France pour inspirer les jeunes basketteurs dionysiens.">
                 <td>
-                  <div class="fw-bold fs-6">PAYET Jean-Baptiste</div>
-                  <div class="text-muted small">Saint-Denis · Arrière / Meneur</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&auto=format&fit=crop&q=80" alt="PAYET Jean-Baptiste" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">PAYET Jean-Baptiste</div>
+                      <div class="text-muted small">Saint-Denis · Arrière / Meneur</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  20 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">20 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m96</span>
                 </td>
@@ -479,16 +549,32 @@
                     <div class="aptitude-bar-fill" style="width: 94%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 2 -->
+              <tr class="reveal-item student-row"
+                data-nom="HOARAU Maxime"
+                data-poste="Meneur de jeu organisateur"
+                data-ville="Saint-Pierre · Club formateur : BC Saint-Pierre"
+                data-age="19 ans"
+                data-taille="1m91"
+                data-aptitude="88%"
+                data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Qualité de passe décisive & transition rapide"
+                data-voeux="Je souhaite poursuivre mon double cursus Sport-Études en licence STAPS tout en évoluant en Nationale 1 ou Espoirs Pro B. Mon ambition ultime est de disputer une saison universitaire aux États-Unis (NCAA Division 1) afin de perfectionner mon leadership et ma gestion du tempo sous forte pression.">
                 <td>
-                  <div class="fw-bold fs-6">HOARAU Maxime</div>
-                  <div class="text-muted small">Saint-Pierre · Meneur de jeu</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" alt="HOARAU Maxime" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">HOARAU Maxime</div>
+                      <div class="text-muted small">Saint-Pierre · Meneur de jeu</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  19 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">19 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m91</span>
                 </td>
@@ -501,16 +587,32 @@
                     <div class="aptitude-bar-fill" style="width: 88%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 3 -->
+              <tr class="reveal-item student-row"
+                data-nom="FONTAINE Lucas"
+                data-poste="Pivot / Ailier fort moderne"
+                data-ville="Saint-Paul · Club formateur : Saint-Paul BC"
+                data-age="21 ans"
+                data-taille="2m03"
+                data-aptitude="96%"
+                data-img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Envergure défensive, protection de cercle & rebonds offensifs"
+                data-voeux="Avec mes 2m03, je veux dominer le secteur intérieur au plus haut niveau national. Mon vœu est d'intégrer une académie européenne réputée pour le travail des grands gabarits (en Espagne ou en France), avec l'ambition affirmée de décrocher une pré-sélection en Équipe de France U23.">
                 <td>
-                  <div class="fw-bold fs-6">FONTAINE Lucas</div>
-                  <div class="text-muted small">Saint-Paul · Pivot / Ailier fort</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80" alt="FONTAINE Lucas" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">FONTAINE Lucas</div>
+                      <div class="text-muted small">Saint-Paul · Pivot / Ailier fort</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  21 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">21 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">2m03</span>
                 </td>
@@ -523,38 +625,70 @@
                     <div class="aptitude-bar-fill" style="width: 96%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 4 -->
+              <tr class="reveal-item student-row"
+                data-nom="GRONDIN Mathias"
+                data-poste="Arrière shooteur d'élite"
+                data-ville="Le Tampon · Club formateur : Tamponnaise BB"
+                data-age="22 ans"
+                data-taille="1m88"
+                data-aptitude="85%"
+                data-img="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Tir à 3 points catch-and-shoot & spacing"
+                data-voeux="Je vise une place de titulaire dans une équipe de Nationale 2 avec un rôle de sniper attitré. Je souhaite également passer mes diplômes d'entraîneur fédéral pour revenir plus tard transmettre mon expérience et structurer la formation des jeunes au Tampon et dans le sud de l'île.">
                 <td>
-                  <div class="fw-bold fs-6">GRONDIN Mathias</div>
-                  <div class="text-muted small">Le Tampon · Arrière shooteur</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80" alt="GRONDIN Mathias" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">GRONDIN Mathias</div>
+                      <div class="text-muted small">Le Tampon · Arrière shooteur</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  22 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">22 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m88</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-bold">85%</span>
-                    <span class="text-muted small">Tir à longue distance</span>
+                    <span class="text-muted small">Tir longue distance</span>
                   </div>
                   <div class="aptitude-bar-bg">
                     <div class="aptitude-bar-fill" style="width: 85%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 5 -->
+              <tr class="reveal-item student-row"
+                data-nom="TÉCHER Noah"
+                data-poste="Ailier polyvalent / Two-way player"
+                data-ville="Saint-Leu · Club formateur : Saint-Leu Basket"
+                data-age="19 ans"
+                data-taille="1m94"
+                data-aptitude="91%"
+                data-img="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Défense tout-terrain, interceptions & finitions au cercle"
+                data-voeux="Mon vœu le plus cher est de faire du basket mon métier. Je veux m'aguerrir physiquement pour devenir un ailier '3-and-D' moderne capable d'éteindre le meilleur attaquant adverse tout en sanctionnant derrière la ligne à 3 points.">
                 <td>
-                  <div class="fw-bold fs-6">TÉCHER Noah</div>
-                  <div class="text-muted small">Saint-Leu · Ailier polyvalent</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120&auto=format&fit=crop&q=80" alt="TÉCHER Noah" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">TÉCHER Noah</div>
+                      <div class="text-muted small">Saint-Leu · Ailier polyvalent</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  19 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">19 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m94</span>
                 </td>
@@ -567,16 +701,32 @@
                     <div class="aptitude-bar-fill" style="width: 91%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 6 -->
+              <tr class="reveal-item student-row"
+                data-nom="RIVIÈRE Dylan"
+                data-poste="Ailier fort puissant"
+                data-ville="Saint-Benoît · Club formateur : CS Saint-Benoît"
+                data-age="20 ans"
+                data-taille="1m98"
+                data-aptitude="92%"
+                data-img="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Pénétration en force, post-up & jeu physique"
+                data-voeux="Je souhaite rejoindre un programme universitaire canadien ou américain pour combiner formation académique en gestion et championnat universitaire compétitif. Mon but est d'apporter mon impact athlétique et ma détermination réunionnaise dans un collectif ambitieux.">
                 <td>
-                  <div class="fw-bold fs-6">RIVIÈRE Dylan</div>
-                  <div class="text-muted small">Saint-Benoît · Ailier fort</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=120&auto=format&fit=crop&q=80" alt="RIVIÈRE Dylan" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">RIVIÈRE Dylan</div>
+                      <div class="text-muted small">Saint-Benoît · Ailier fort</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  20 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">20 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m98</span>
                 </td>
@@ -589,16 +739,32 @@
                     <div class="aptitude-bar-fill" style="width: 92%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 7 -->
+              <tr class="reveal-item student-row"
+                data-nom="BOYER Romain"
+                data-poste="Meneur gestionnaire rapide"
+                data-ville="La Possession · Club formateur : Possession Basket"
+                data-age="21 ans"
+                data-taille="1m85"
+                data-aptitude="87%"
+                data-img="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Interceptions, vision périphérique & contre-attaque"
+                data-voeux="Meneur gestionnaire et vif, je veux mener le jeu d'une équipe solide en Nationale 1. Mon ambition est également de porter fièrement le maillot de la sélection de La Réunion lors des prochains rendez-vous de l'Océan Indien.">
                 <td>
-                  <div class="fw-bold fs-6">BOYER Romain</div>
-                  <div class="text-muted small">La Possession · Meneur rapide</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=120&auto=format&fit=crop&q=80" alt="BOYER Romain" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">BOYER Romain</div>
+                      <div class="text-muted small">La Possession · Meneur rapide</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  21 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">21 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m85</span>
                 </td>
@@ -611,16 +777,32 @@
                     <div class="aptitude-bar-fill" style="width: 87%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 8 -->
+              <tr class="reveal-item student-row"
+                data-nom="BEGUE Kenji"
+                data-poste="Pivot protecteur de cercle"
+                data-ville="Sainte-Marie · Club formateur : Sainte-Marie Basket Club"
+                data-age="22 ans"
+                data-taille="2m01"
+                data-aptitude="95%"
+                data-img="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Contres chronométrés, dissuasion & rebond verrouillé"
+                data-voeux="Mon objectif est de devenir une référence défensive sous le cercle dans un club professionnel en France. Je souhaite perfectionner mon jeu dos au panier et participer à des camps d'entraînement d'été de niveau européen.">
                 <td>
-                  <div class="fw-bold fs-6">BEGUE Kenji</div>
-                  <div class="text-muted small">Sainte-Marie · Pivot protecteur</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=120&auto=format&fit=crop&q=80" alt="BEGUE Kenji" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">BEGUE Kenji</div>
+                      <div class="text-muted small">Sainte-Marie · Pivot protecteur</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  22 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">22 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">2m01</span>
                 </td>
@@ -633,38 +815,70 @@
                     <div class="aptitude-bar-fill" style="width: 95%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 9 -->
+              <tr class="reveal-item student-row"
+                data-nom="MAILLOT Yanis"
+                data-poste="Arrière athlétique explosif"
+                data-ville="Saint-Joseph · Club formateur : Saint-Joseph Basket"
+                data-age="19 ans"
+                data-taille="1m90"
+                data-aptitude="89%"
+                data-img="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Détente verticale sèche, finitions acrobatiques & vitesse"
+                data-voeux="Fort d'une grosse détente verticale naturelle, je veux développer ma régularité au tir extérieur. Mon vœu est d'intégrer le groupe Espoirs d'un club professionnel en Métropole et de franchir les paliers un à un avec humilité et rigueur.">
                 <td>
-                  <div class="fw-bold fs-6">MAILLOT Yanis</div>
-                  <div class="text-muted small">Saint-Joseph · Arrière athlétique</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&auto=format&fit=crop&q=80" alt="MAILLOT Yanis" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">MAILLOT Yanis</div>
+                      <div class="text-muted small">Saint-Joseph · Arrière athlétique</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  19 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">19 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m90</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-bold">89%</span>
-                    <span class="text-muted small">Détente verticale & finitions</span>
+                    <span class="text-muted small">Détente & finitions</span>
                   </div>
                   <div class="aptitude-bar-bg">
                     <div class="aptitude-bar-fill" style="width: 89%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 10 -->
+              <tr class="reveal-item student-row"
+                data-nom="DIJOUX Enzo"
+                data-poste="Ailier tireur d'élite"
+                data-ville="Saint-André · Club formateur : BC Saint-André"
+                data-age="20 ans"
+                data-taille="1m97"
+                data-aptitude="93%"
+                data-img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Adresse à 3 points au-delà des 6m75 & sang-froid"
+                data-voeux="Je recherche une structure d'excellence qui valorise le tir extérieur et le spacing. Mon souhait est de signer mon premier contrat aspirant-pro dans les deux ans et d'évoluer en Pro B tout en représentant La Réunion avec honneur.">
                 <td>
-                  <div class="fw-bold fs-6">DIJOUX Enzo</div>
-                  <div class="text-muted small">Saint-André · Ailier shooteur</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="DIJOUX Enzo" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">DIJOUX Enzo</div>
+                      <div class="text-muted small">Saint-André · Ailier shooteur</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  20 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">20 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m97</span>
                 </td>
@@ -677,16 +891,32 @@
                     <div class="aptitude-bar-fill" style="width: 93%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 11 -->
+              <tr class="reveal-item student-row"
+                data-nom="LEBON Cédric"
+                data-poste="Pivot dominant d'envergure"
+                data-ville="Le Port · Club formateur : Port Basket Club"
+                data-age="23 ans"
+                data-taille="2m05"
+                data-aptitude="97%"
+                data-img="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Dominance sous le cercle, jeu dos au panier & contres"
+                data-voeux="Avec mes 2m05 et ma maturité sportive, je souhaite rejoindre une équipe professionnelle de Pro B ou Nationale 1 avec des ambitions de montée. Mon vœu est de prouver la compétitivité et la force physique des athlètes réunionnais sur les parquets métropolitains.">
                 <td>
-                  <div class="fw-bold fs-6">LEBON Cédric</div>
-                  <div class="text-muted small">Le Port · Pivot dominant</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&auto=format&fit=crop&q=80" alt="LEBON Cédric" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">LEBON Cédric</div>
+                      <div class="text-muted small">Le Port · Pivot dominant</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  23 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">23 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">2m05</span>
                 </td>
@@ -699,27 +929,46 @@
                     <div class="aptitude-bar-fill" style="width: 97%;"></div>
                   </div>
                 </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
+                </td>
               </tr>
 
-              <tr class="reveal-item">
+              <!-- ÉTUDIANT 12 -->
+              <tr class="reveal-item student-row"
+                data-nom="ETHÈVE Mathis"
+                data-poste="Meneur explosif & créatif"
+                data-ville="Sainte-Suzanne · Club formateur : Sainte-Suzanne Basket"
+                data-age="18 ans"
+                data-taille="1m86"
+                data-aptitude="90%"
+                data-img="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=260&auto=format&fit=crop&q=80"
+                data-specialite="Vitesse d'exécution balle en main, passes aveugles & culot"
+                data-voeux="Plus jeune de la promotion à 18 ans, mon vœu est d'intégrer un pôle France ou un centre de formation Espoirs de référence pour peaufiner mon jeu de transition et préparer mon passage vers le basketball professionnel de haut niveau.">
                 <td>
-                  <div class="fw-bold fs-6">ETHÈVE Mathis</div>
-                  <div class="text-muted small">Sainte-Suzanne · Meneur explosif</div>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=120&auto=format&fit=crop&q=80" alt="ETHÈVE Mathis" class="student-avatar">
+                    <div>
+                      <div class="fw-bold fs-6">ETHÈVE Mathis</div>
+                      <div class="text-muted small">Sainte-Suzanne · Meneur explosif</div>
+                    </div>
+                  </div>
                 </td>
-                <td class="text-center fw-semibold text-muted">
-                  18 ans
-                </td>
+                <td class="text-center fw-semibold text-muted">18 ans</td>
                 <td class="text-center">
                   <span class="badge border rounded-pill px-3 py-1 fw-bold">1m86</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-bold">90%</span>
-                    <span class="text-muted small">Vitesse d'exécution & vision</span>
+                    <span class="text-muted small">Vitesse & vision</span>
                   </div>
                   <div class="aptitude-bar-bg">
                     <div class="aptitude-bar-fill" style="width: 90%;"></div>
                   </div>
+                </td>
+                <td class="text-end">
+                  <span class="badge rounded-pill bg-light text-dark border px-2 py-1"><i class="bi bi-chevron-right"></i></span>
                 </td>
               </tr>
 
@@ -740,13 +989,138 @@
       </div>
     </main>
 
+    <!-- MODAL DE DÉTAIL DE L'ÉTUDIANT ET SES VŒUX (BOOTSTRAP 5.3.8, OUVERT SANS CARDS) -->
+    <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="modalStudentNom" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-content-open p-4 p-md-5">
+          
+          <!-- En-tête du modal -->
+          <div class="d-flex justify-content-between align-items-start pb-4 border-bottom">
+            <div class="d-flex align-items-center gap-3 gap-md-4">
+              <img id="modalStudentImg" src="" alt="Photo étudiant" class="modal-avatar-lg">
+              <div>
+                <span class="badge bg-primary rounded-pill px-3 py-1 mb-2 fw-medium" id="modalStudentPoste">Poste</span>
+                <h3 class="h4 fw-bold mb-1" id="modalStudentNom">Nom de l'étudiant</h3>
+                <div class="text-muted small" id="modalStudentVille"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Ville</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+
+          <!-- Corps du modal (sans card) -->
+          <div class="py-4">
+            
+            <!-- Caractéristiques physiques et techniques -->
+            <div class="row g-3 text-center mb-4 pb-2">
+              <div class="col-4">
+                <div class="border rounded-4 p-3">
+                  <span class="text-muted small d-block">Âge</span>
+                  <strong class="fs-5" id="modalStudentAge">20 ans</strong>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border rounded-4 p-3">
+                  <span class="text-muted small d-block">Taille</span>
+                  <strong class="fs-5" id="modalStudentTaille">1m96</strong>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border rounded-4 p-3">
+                  <span class="text-muted small d-block">Indice Aptitude</span>
+                  <strong class="fs-5 text-success" id="modalStudentAptitude">94%</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Jauge et spécialité -->
+            <div class="mb-4">
+              <div class="d-flex justify-content-between small text-muted mb-1">
+                <span>Profil technique & athlétique</span>
+                <span id="modalStudentSpecialite" class="fw-medium text-primary">Spécialité</span>
+              </div>
+              <div class="aptitude-bar-bg" style="height: 8px;">
+                <div class="aptitude-bar-fill" id="modalStudentBar" style="width: 90%;"></div>
+              </div>
+            </div>
+
+            <!-- VŒUX DE L'ÉTUDIANT SOUS FORME DE TEXTE -->
+            <div>
+              <h4 class="h6 fw-bold text-uppercase text-muted tracking-wide mb-2">
+                <i class="bi bi-chat-quote-fill text-primary me-2"></i> Projet sportif & Vœux de l'étudiant
+              </h4>
+              <div class="voeux-quote-box">
+                <p class="mb-0" id="modalStudentVoeux">
+                  <!-- Texte des vœux injecté par JavaScript -->
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Pied du modal -->
+          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+            <span class="text-muted small">Fiche officielle · Pôle Espoirs La Réunion (974)</span>
+            <button type="button" class="btn btn-dark rounded-pill px-4 py-2" data-bs-dismiss="modal">
+              Fermer la fiche
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap 5.3.8 Bundle JS (Règle obligatoire) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
 
-        // 1. GESTION DU MODE SOMBRE / CLAIR AVEC CHANGEMENT D'IMAGES DYNAMIQUE
+        // 1. GESTION DU MODAL AU CLIC SUR UN ÉTUDIANT
+        const studentRows = document.querySelectorAll('.student-row');
+        const modalElement = document.getElementById('studentModal');
+        const studentModal = new bootstrap.Modal(modalElement);
+
+        const modalImg = document.getElementById('modalStudentImg');
+        const modalNom = document.getElementById('modalStudentNom');
+        const modalPoste = document.getElementById('modalStudentPoste');
+        const modalVille = document.getElementById('modalStudentVille');
+        const modalAge = document.getElementById('modalStudentAge');
+        const modalTaille = document.getElementById('modalStudentTaille');
+        const modalAptitude = document.getElementById('modalStudentAptitude');
+        const modalSpecialite = document.getElementById('modalStudentSpecialite');
+        const modalBar = document.getElementById('modalStudentBar');
+        const modalVoeux = document.getElementById('modalStudentVoeux');
+
+        studentRows.forEach(row => {
+          row.addEventListener('click', () => {
+            const nom = row.getAttribute('data-nom');
+            const poste = row.getAttribute('data-poste');
+            const ville = row.getAttribute('data-ville');
+            const age = row.getAttribute('data-age');
+            const taille = row.getAttribute('data-taille');
+            const aptitude = row.getAttribute('data-aptitude');
+            const img = row.getAttribute('data-img');
+            const specialite = row.getAttribute('data-specialite');
+            const voeux = row.getAttribute('data-voeux');
+
+            // Injection des données dans le modal
+            modalNom.textContent = nom;
+            modalPoste.textContent = poste;
+            modalVille.innerHTML = `<i class="bi bi-geo-alt-fill text-danger me-1"></i> ${ville}`;
+            modalAge.textContent = age;
+            modalTaille.textContent = taille;
+            modalAptitude.textContent = aptitude;
+            modalSpecialite.textContent = specialite;
+            modalBar.style.width = aptitude;
+            modalVoeux.textContent = `« ${voeux} »`;
+            modalImg.src = img;
+            modalImg.alt = nom;
+
+            studentModal.show();
+          });
+        });
+
+        // 2. GESTION DU MODE SOMBRE / CLAIR AVEC CHANGEMENT D'IMAGES DYNAMIQUE
         const htmlElement = document.documentElement;
         const themeToggleBtn = document.getElementById('themeToggleBtn');
         const themeIcon = document.getElementById('themeIcon');
@@ -780,7 +1154,7 @@
           applyTheme(newTheme);
         });
 
-        // 2. REFLET LUMINEUX DE VERRE (Spotlight Mouse Tracking)
+        // 3. REFLET LUMINEUX DE VERRE (Spotlight Mouse Tracking)
         const interactiveCtas = document.querySelectorAll('.interactive-cta');
         interactiveCtas.forEach(cta => {
           cta.addEventListener('mousemove', (e) => {
@@ -802,7 +1176,7 @@
           });
         });
 
-        // 3. INCLINAISON 3D TILT SUR LES BADGES STATS
+        // 4. INCLINAISON 3D TILT SUR LES BADGES STATS
         const tiltItems = document.querySelectorAll('.interactive-tilt');
         tiltItems.forEach(item => {
           item.addEventListener('mousemove', (e) => {
@@ -821,7 +1195,7 @@
           });
         });
 
-        // 4. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
+        // 5. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
         const animateCounters = () => {
           const counters = document.querySelectorAll('.stat-num');
           counters.forEach(counter => {
@@ -849,7 +1223,7 @@
         };
         setTimeout(animateCounters, 200);
 
-        // 5. SCROLL REVEAL VIA INTERSECTION OBSERVER
+        // 6. SCROLL REVEAL VIA INTERSECTION OBSERVER
         const revealItems = document.querySelectorAll('.reveal-item');
         const revealObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
@@ -868,7 +1242,7 @@
           revealObserver.observe(item);
         });
 
-        // 6. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
+        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {
