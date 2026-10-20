@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NBA Highlights & Scores - Stephen Curry 4K</title>
+    <title>NBA Highlights & Scores - Édition 4K</title>
     
     <!-- Bootstrap 5.3.8 CSS (Règle obligatoire) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -14,13 +14,9 @@
     <style>
       :root {
         --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        --ios-bg: #f2f2f7;
-        --ios-glass-card-bg: rgba(255, 255, 255, 0.62);
-        --ios-glass-card-hover: rgba(255, 255, 255, 0.82);
-        --ios-glass-border: rgba(255, 255, 255, 0.7);
+        --page-bg: #f8f9fa;
+        --ios-glass-hover: rgba(255, 255, 255, 0.85);
         --ios-glass-border-hover: rgba(255, 255, 255, 0.95);
-        --ios-shadow: 0 10px 34px rgba(0, 0, 0, 0.08);
-        --ios-shadow-hover: 0 18px 46px rgba(0, 0, 0, 0.14);
       }
 
       html {
@@ -29,41 +25,40 @@
 
       body {
         font-family: var(--ios-font);
-        background-color: var(--ios-bg);
-        color: #1c1c1e;
+        background-color: var(--page-bg);
+        color: #1d1d1f;
         margin: 0;
         padding: 0;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
 
-      /* Barre de navigation flottante style iOS Glassmorphism avec effet au survol */
-      .ios-nav {
+      /* Navigation aérée et ouverte style iOS (sans boîte rigide) */
+      .ios-nav-open {
         position: fixed;
         top: 1.25rem;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1040;
-        width: calc(100% - 2.5rem);
-        max-width: 1200px;
-        background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        border: 1px solid var(--ios-glass-border);
+        width: calc(100% - 3rem);
+        max-width: 1240px;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.6);
         border-radius: 999px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-        padding: 0.75rem 1.75rem;
+        padding: 0.75rem 2rem;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .ios-nav:hover {
-        background: rgba(255, 255, 255, 0.82);
-        backdrop-filter: blur(32px) saturate(210%);
-        -webkit-backdrop-filter: blur(32px) saturate(210%);
-        border-color: var(--ios-glass-border-hover);
-        box-shadow: 0 12px 38px rgba(0, 0, 0, 0.1);
+      .ios-nav-open:hover {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(30px) saturate(210%);
+        -webkit-backdrop-filter: blur(30px) saturate(210%);
+        border-color: #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       }
 
-      /* Section Héro Plein Écran (100vh) SANS AUCUN OVERLAY */
+      /* Section Héro Plein Écran (100vh) SANS AUCUN OVERLAY et SANS CARDS */
       .hero-fullscreen {
         position: relative;
         min-height: 100vh;
@@ -71,290 +66,282 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* Image réelle en très haute définition (5184 x 3456 - au-delà de la 4K) SANS AUCUN OVERLAY */
+        /* Image 4K pure de Stephen Curry sans aucun overlay assombrissant */
         background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a6/Stephen_Curry_Shooting.jpg');
         background-size: cover;
         background-position: center 30%;
         background-repeat: no-repeat;
-        padding-top: 6.5rem;
+        padding-top: 7rem;
         padding-bottom: 2.5rem;
       }
 
-      /* Boîtiers en verre iOS (Glassmorphism) avec effet au survol */
-      .ios-glass-panel {
-        background: var(--ios-glass-card-bg);
-        backdrop-filter: blur(26px) saturate(190%);
-        -webkit-backdrop-filter: blur(26px) saturate(190%);
-        border: 1px solid var(--ios-glass-border);
-        border-radius: 1.75rem;
-        box-shadow: var(--ios-shadow);
-        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        padding: 2.2rem;
+      /* Typographie ouverte sur image avec ombre portée douce pour la lisibilité */
+      .hero-text-shadow {
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
       }
 
-      /* EFFET VERRE IOS AU SURVOL (demande utilisateur) */
-      .ios-glass-panel:hover {
-        background: var(--ios-glass-card-hover);
-        backdrop-filter: blur(36px) saturate(220%);
-        -webkit-backdrop-filter: blur(36px) saturate(220%);
-        border-color: var(--ios-glass-border-hover);
-        box-shadow: var(--ios-shadow-hover), inset 0 1px 2px rgba(255, 255, 255, 0.9);
-        transform: translateY(-5px);
+      .hero-lead-shadow {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+        color: rgba(255, 255, 255, 0.95);
       }
 
-      /* Boutons CTA avec effet verre iOS interactif au survol */
-      .btn-ios-cta {
-        background: rgba(255, 255, 255, 0.55);
-        color: #111111;
-        backdrop-filter: blur(18px) saturate(180%);
-        -webkit-backdrop-filter: blur(18px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        border-radius: 999px;
-        font-weight: 600;
-        padding: 0.85rem 1.85rem;
-        font-size: 0.95rem;
-        text-decoration: none;
+      /* Pastilles d'accentuation ouvertes */
+      .open-badge {
         display: inline-flex;
         align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      /* EFFET VERRE SURVOL DES CTA */
-      .btn-ios-cta:hover {
-        background: rgba(255, 255, 255, 0.92);
-        color: #000000;
-        backdrop-filter: blur(30px) saturate(220%);
-        -webkit-backdrop-filter: blur(30px) saturate(220%);
-        border-color: #ffffff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18), inset 0 1px 2px rgba(255, 255, 255, 1);
-        transform: translateY(-3px) scale(1.02);
-      }
-
-      /* CTA Primaire teinté iOS */
-      .btn-ios-cta-primary {
-        background: #0071e3;
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 999px;
-        font-weight: 600;
-        padding: 0.85rem 1.85rem;
-        font-size: 0.95rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .btn-ios-cta-primary:hover {
-        background: #0077ed;
-        color: #ffffff;
-        box-shadow: 0 10px 28px rgba(0, 113, 227, 0.45);
-        transform: translateY(-3px) scale(1.02);
-      }
-
-      /* Cartes d'indicateurs statistiques rapides */
-      .glass-mini-stat {
-        background: rgba(255, 255, 255, 0.45);
-        backdrop-filter: blur(14px) saturate(160%);
-        -webkit-backdrop-filter: blur(14px) saturate(160%);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        border-radius: 1.15rem;
-        padding: 0.9rem 1.25rem;
-        transition: all 0.25s ease;
-      }
-      .glass-mini-stat:hover {
-        background: rgba(255, 255, 255, 0.75);
-        border-color: #ffffff;
-        transform: translateY(-2px);
-      }
-
-      /* Pastille d'indicateur */
-      .ios-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        background: rgba(255, 255, 255, 0.5);
+        gap: 0.5rem;
+        background: rgba(0, 0, 0, 0.35);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 999px;
-        padding: 0.35rem 0.9rem;
-        font-size: 0.8rem;
+        padding: 0.4rem 1.1rem;
+        font-size: 0.82rem;
         font-weight: 600;
-        color: #3a3a3c;
+        color: #ffffff;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        transition: all 0.25s ease;
+      }
+      .open-badge:hover {
+        background: rgba(255, 255, 255, 0.75);
+        color: #000000;
+        border-color: #ffffff;
       }
 
-      /* Indicateur scroll bas */
-      .scroll-down-btn {
-        background: rgba(255, 255, 255, 0.6);
+      /* CTA style iOS - Bouton verre avec effet au survol */
+      .btn-ios-pill-primary {
+        background: #ffffff;
+        color: #000000;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 999px;
+        font-weight: 600;
+        padding: 0.9rem 2.2rem;
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .btn-ios-pill-primary:hover {
+        background: rgba(255, 255, 255, 0.95);
+        color: #000000;
+        backdrop-filter: blur(28px) saturate(220%);
+        -webkit-backdrop-filter: blur(28px) saturate(220%);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+      }
+
+      .btn-ios-pill-glass {
+        background: rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        font-weight: 600;
+        padding: 0.9rem 2.2rem;
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      /* EFFET VERRE AU SURVOL SUR LE CTA */
+      .btn-ios-pill-glass:hover {
+        background: rgba(255, 255, 255, 0.88);
+        color: #000000;
+        backdrop-filter: blur(32px) saturate(220%);
+        -webkit-backdrop-filter: blur(32px) saturate(220%);
+        border-color: #ffffff;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 1);
+      }
+
+      /* Indicateurs statistiques ouverts (sans card) avec effet verre au survol */
+      .open-stat-item {
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1.25rem;
+        padding: 1rem 1.4rem;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      /* EFFET VERRE SURVOL DES STATS */
+      .open-stat-item:hover {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(28px) saturate(200%);
+        -webkit-backdrop-filter: blur(28px) saturate(200%);
+        border-color: #ffffff;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+      }
+      .open-stat-item:hover .stat-num {
+        color: #000000 !important;
+      }
+      .open-stat-item:hover .stat-lbl {
+        color: #444444 !important;
+      }
+
+      /* Bouton indicateur de défilement */
+      .scroll-pill-hint {
+        background: rgba(255, 255, 255, 0.4);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--ios-glass-border);
+        border: 1px solid rgba(255, 255, 255, 0.6);
         color: #1d1d1f;
         border-radius: 999px;
-        padding: 0.6rem 1.4rem;
+        padding: 0.65rem 1.6rem;
         font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 600;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         transition: all 0.25s ease;
       }
-      .scroll-down-btn:hover {
+      .scroll-pill-hint:hover {
         background: rgba(255, 255, 255, 0.9);
-        color: #000;
+        color: #000000;
         transform: translateY(-2px);
       }
 
-      /* Conteneur en verre iOS pour le tableau */
-      .ios-table-glass {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(30px) saturate(190%);
-        -webkit-backdrop-filter: blur(30px) saturate(190%);
-        border: 1px solid var(--ios-glass-border);
-        border-radius: 1.75rem;
-        box-shadow: var(--ios-shadow);
-        transition: all 0.35s ease;
-        overflow: hidden;
-      }
-      .ios-table-glass:hover {
-        box-shadow: var(--ios-shadow-hover);
-        border-color: var(--ios-glass-border-hover);
-      }
-
-      /* Tableau minimaliste avec effet verre au survol des lignes */
-      .table-ios {
+      /* TABLEAU EN DISPOSITION OUVERTE (SANS AUCUNE CARD) */
+      .table-open {
         --bs-table-bg: transparent;
         border-collapse: separate;
-        border-spacing: 0;
-        margin-bottom: 0;
+        border-spacing: 0 0.5rem; /* Espace aéré entre les lignes */
+        width: 100%;
       }
-      .table-ios th {
-        font-size: 0.72rem;
+      .table-open th {
+        font-size: 0.75rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #86868b;
         font-weight: 600;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        background: rgba(255, 255, 255, 0.35);
+        border: none;
+        padding: 1rem 1.5rem;
       }
-      .table-ios td {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      .table-open td {
+        border: none;
+        padding: 1.25rem 1.5rem;
         vertical-align: middle;
-      }
-      .table-ios tbody tr:last-child td {
-        border-bottom: none;
+        background: transparent;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      /* EFFET VERRE AU SURVOL DE CHAQUE LIGNE DU TABLEAU */
-      .table-ios tbody tr {
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      /* Coins arrondis pour les lignes ouvertes */
+      .table-open tbody tr td:first-child {
+        border-top-left-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+      }
+      .table-open tbody tr td:last-child {
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+      }
+
+      /* EFFET VERRE IOS AU SURVOL D'UNE LIGNE */
+      .table-open tbody tr {
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         cursor: default;
       }
-      .table-ios tbody tr:hover {
-        background-color: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(14px) saturate(180%);
-        -webkit-backdrop-filter: blur(14px) saturate(180%);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 4px 16px rgba(0, 0, 0, 0.04);
+      .table-open tbody tr:hover td {
+        background-color: var(--ios-glass-hover);
+        backdrop-filter: blur(20px) saturate(190%);
+        -webkit-backdrop-filter: blur(20px) saturate(190%);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      }
+      .table-open tbody tr:hover {
+        transform: translateY(-2px);
       }
 
-      .score-digits {
+      .score-display {
         font-variant-numeric: tabular-nums;
         font-weight: 700;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.03em;
       }
     </style>
   </head>
   <body>
 
-    <!-- Barre de navigation flottante effet verre iOS -->
-    <nav class="ios-nav d-flex justify-content-between align-items-center">
+    <!-- Barre de navigation flottante ouverte et épurée -->
+    <nav class="ios-nav-open d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
         <span class="badge rounded-circle bg-dark p-2 text-white"><i class="bi bi-dribbble"></i></span>
-        <span class="fw-bold text-dark">NBA Tracker</span>
+        <span class="fw-bold text-dark">NBA Highlights</span>
       </div>
       <div class="d-none d-md-flex align-items-center gap-4">
         <a href="#hero" class="text-secondary text-decoration-none small fw-semibold">Accueil</a>
-        <a href="#tableau" class="text-secondary text-decoration-none small fw-semibold">Matchs & Résultats</a>
+        <a href="#tableau" class="text-secondary text-decoration-none small fw-semibold">Résultats</a>
         <a href="#tableau" class="text-secondary text-decoration-none small fw-semibold">MVP</a>
       </div>
       <a href="#tableau" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Explorer</a>
     </nav>
 
-    <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - CTAs RÉPARTIS À GAUCHE ET À DROITE -->
+    <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - AUCUNE CARD -->
     <header id="hero" class="hero-fullscreen px-3 px-md-5">
       
-      <!-- Ligne centrale avec les 2 blocs de CTA répartis à gauche et à droite -->
+      <!-- Ligne principale avec CTAs répartis à gauche et à droite (sans card) -->
       <div class="container-fluid px-lg-5 my-auto">
-        <div class="row g-4 align-items-center justify-content-between">
+        <div class="row align-items-center justify-content-between g-5">
           
-          <!-- BLOC GAUCHE AVEC LE PREMIER CTA -->
+          <!-- CONTENU GAUCHE AVEC CTA GAUCHE (Ouvert, sans card) -->
           <div class="col-lg-5 col-xl-5">
-            <div class="ios-glass-panel">
-              <div class="ios-pill mb-3">
-                <i class="bi bi-camera-fill text-primary"></i> Image 4K Pure · Sans Filtre
-              </div>
-              <h1 class="h2 fw-bold text-dark mb-3" style="letter-spacing: -0.02em;">
-                L'Art du Tir & L'Intensité NBA
-              </h1>
-              <p class="text-secondary mb-4" style="line-height: 1.6; font-size: 0.98rem;">
-                Vivez au plus près la dynamique des dernières rencontres et l'élégance du geste parfait avec Stephen Curry.
-              </p>
-              
-              <!-- CTA À GAUCHE -->
-              <div>
-                <a href="#tableau" class="btn-ios-cta-primary">
-                  <i class="bi bi-table"></i> Consulter les Derniers Matchs
-                </a>
-              </div>
+            <div class="open-badge mb-3">
+              <i class="bi bi-broadcast text-warning"></i>
+              <span>Édition 4K · Stephen Curry</span>
+            </div>
+            
+            <h1 class="display-5 fw-bold text-white mb-3 hero-text-shadow" style="letter-spacing: -0.03em;">
+              L'Art du Tir & L'Intensité NBA.
+            </h1>
+            
+            <p class="fs-5 hero-lead-shadow mb-4" style="line-height: 1.55;">
+              La pureté du geste au sommet du basketball mondial. Retrouvez les comptes-rendus des rencontres décisives et l'impact des plus grands tireurs de la ligue.
+            </p>
+            
+            <!-- CTA À GAUCHE -->
+            <div>
+              <a href="#tableau" class="btn-ios-pill-primary">
+                <i class="bi bi-table"></i> Consulter les Derniers Matchs
+              </a>
             </div>
           </div>
 
-          <!-- BLOC DROITE AVEC LE DEUXIÈME CTA ET STATISTIQUES RAPIDES -->
-          <div class="col-lg-5 col-xl-5">
-            <div class="ios-glass-panel">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="ios-pill">
-                  <i class="bi bi-lightning-charge-fill text-warning"></i> Performances Récentes
-                </div>
-                <span class="badge bg-dark rounded-pill px-3 py-1 text-white small">Saison 2026</span>
+          <!-- CONTENU DROITE AVEC CTA DROITE (Ouvert, sans card) -->
+          <div class="col-lg-5 col-xl-5 text-lg-end">
+            <div class="d-inline-block text-start mb-4">
+              <div class="text-white-50 text-uppercase small fw-bold mb-3 text-lg-end" style="letter-spacing: 0.08em;">
+                Données & Performances
               </div>
               
-              <h2 class="h5 fw-bold text-dark mb-3">Statistiques & Récapitulatif Clés</h2>
-              
-              <!-- Cartes de stats avec effet verre -->
-              <div class="row g-2 mb-4">
-                <div class="col-4">
-                  <div class="glass-mini-stat text-center">
-                    <span class="d-block fw-bold fs-5 text-dark">5</span>
-                    <span class="text-secondary small" style="font-size: 0.72rem;">Matchs</span>
-                  </div>
+              <!-- Indicateurs ouverts sans boîte rigide (effet verre au survol) -->
+              <div class="d-flex flex-wrap gap-3 justify-content-lg-end">
+                <div class="open-stat-item text-center">
+                  <span class="d-block fw-bold fs-4 text-white stat-num">5</span>
+                  <span class="text-white-50 small stat-lbl">Matchs</span>
                 </div>
-                <div class="col-4">
-                  <div class="glass-mini-stat text-center">
-                    <span class="d-block fw-bold fs-5 text-dark">115.6</span>
-                    <span class="text-secondary small" style="font-size: 0.72rem;">Pts Moy.</span>
-                  </div>
+                <div class="open-stat-item text-center">
+                  <span class="d-block fw-bold fs-4 text-white stat-num">115.6</span>
+                  <span class="text-white-50 small stat-lbl">Pts Moy.</span>
                 </div>
-                <div class="col-4">
-                  <div class="glass-mini-stat text-center">
-                    <span class="d-block fw-bold fs-5 text-dark">35.2</span>
-                    <span class="text-secondary small" style="font-size: 0.72rem;">Pts MVP</span>
-                  </div>
+                <div class="open-stat-item text-center">
+                  <span class="d-block fw-bold fs-4 text-white stat-num">35.2</span>
+                  <span class="text-white-50 small stat-lbl">Pts MVP</span>
                 </div>
               </div>
+            </div>
 
-              <!-- CTA À DROITE -->
-              <div class="text-end">
-                <a href="#tableau" class="btn-ios-cta">
-                  <i class="bi bi-trophy text-warning"></i> Voir les Prestations MVP
-                </a>
-              </div>
+            <!-- CTA À DROITE -->
+            <div>
+              <a href="#tableau" class="btn-ios-pill-glass">
+                <i class="bi bi-trophy text-warning"></i> Voir les Prestations MVP
+              </a>
             </div>
           </div>
 
@@ -363,150 +350,155 @@
 
       <!-- Bouton d'indication de scroll au bas de l'écran -->
       <div class="text-center">
-        <a href="#tableau" class="scroll-down-btn">
-          <span>Découvrir le tableau</span>
+        <a href="#tableau" class="scroll-pill-hint">
+          <span>Découvrir les résultats</span>
           <i class="bi bi-arrow-down-short fs-5"></i>
         </a>
       </div>
 
     </header>
 
-    <!-- SECTION TABLEAU AVEC EFFET VERRE DÉPOLI (IOS GLASSMORPHISM) -->
+    <!-- SECTION TABLEAU EN PLEIN ÉCRAN AÉRÉ ET OUVERT (SANS AUCUNE CARD) -->
     <main id="tableau" class="w-100 px-3 px-md-5 py-5">
       <div class="container-fluid px-lg-5">
         
-        <!-- En-tête de la section tableau -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <!-- En-tête ouvert et fluide -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4 pb-3 border-bottom">
           <div>
-            <span class="text-uppercase small text-secondary fw-bold" style="letter-spacing: 0.08em; font-size: 0.75rem;">Rapports Officiels</span>
-            <h2 class="h4 fw-bold text-dark mb-1">Derniers Matchs & Observations</h2>
-            <p class="text-secondary small mb-0">Survolez les lignes pour révéler l'effet de verre dynamique</p>
+            <span class="text-uppercase small text-secondary fw-bold" style="letter-spacing: 0.08em; font-size: 0.75rem;">
+              Derniers Chocs de la Saison
+            </span>
+            <h2 class="h3 fw-bold text-dark mb-1">Rapports des Rencontres & MVP</h2>
+            <p class="text-secondary small mb-0">Survolez chaque ligne pour révéler l'effet de verre dynamique</p>
           </div>
           <div class="d-flex gap-2">
-            <span class="ios-pill"><i class="bi bi-check-circle-fill text-success"></i> 5 Matchs</span>
-            <span class="ios-pill"><i class="bi bi-layout-three-columns text-primary"></i> 4 Colonnes</span>
+            <span class="badge bg-white text-secondary border px-3 py-2 rounded-pill fw-medium">
+              <i class="bi bi-check2-circle text-success me-1"></i> Données validées
+            </span>
+            <span class="badge bg-white text-secondary border px-3 py-2 rounded-pill fw-medium">
+              4 Colonnes
+            </span>
           </div>
         </div>
 
-        <!-- Boîtier en verre style iOS pour le tableau -->
-        <div class="ios-table-glass p-2 p-md-3">
-          <div class="table-responsive">
-            <table class="table table-ios align-middle">
-              <thead>
-                <tr>
-                  <th scope="col" class="py-3 ps-3">Équipe</th>
-                  <th scope="col" class="py-3 text-center" style="width: 190px;">Points en match</th>
-                  <th scope="col" class="py-3" style="width: 270px;">MVP du match</th>
-                  <th scope="col" class="py-3 pe-3">Observation</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="py-3 ps-3">
-                    <span class="fw-semibold text-dark">Boston Celtics</span>
-                    <span class="text-muted mx-1">/</span>
-                    <span class="text-secondary">Golden State</span>
-                  </td>
-                  <td class="py-3 text-center score-digits">
-                    <span class="fw-bold text-dark">118</span>
-                    <span class="text-muted mx-1">—</span>
-                    <span class="text-secondary">112</span>
-                  </td>
-                  <td class="py-3">
-                    <div class="fw-semibold text-dark">Jayson Tatum</div>
-                    <div class="text-secondary small">35 pts, 8 reb</div>
-                  </td>
-                  <td class="py-3 pe-3 text-secondary small">
-                    Écart décisif creusé dans le 4<sup>e</sup> quart-temps avec une série collective de 12-2.
-                  </td>
-                </tr>
+        <!-- Tableau aéré et fluide sans boîte fermée -->
+        <div class="table-responsive">
+          <table class="table table-open align-middle">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 28%;">Équipe</th>
+                <th scope="col" class="text-center" style="width: 18%;">Points en match</th>
+                <th scope="col" style="width: 24%;">MVP du match</th>
+                <th scope="col" style="width: 30%;">Observation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="fw-bold text-dark">Boston Celtics</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Golden State</span>
+                </td>
+                <td class="text-center score-display">
+                  <span class="fw-bold text-dark">118</span>
+                  <span class="text-muted mx-1">—</span>
+                  <span class="text-secondary">112</span>
+                </td>
+                <td>
+                  <div class="fw-semibold text-dark">Jayson Tatum</div>
+                  <div class="text-secondary small">35 pts, 8 reb</div>
+                </td>
+                <td class="text-secondary small">
+                  Écart décisif creusé dans le 4<sup>e</sup> quart-temps avec une série collective de 12-2.
+                </td>
+              </tr>
 
-                <tr>
-                  <td class="py-3 ps-3">
-                    <span class="fw-semibold text-dark">Los Angeles Lakers</span>
-                    <span class="text-muted mx-1">/</span>
-                    <span class="text-secondary">Denver Nuggets</span>
-                  </td>
-                  <td class="py-3 text-center score-digits">
-                    <span class="fw-bold text-dark">114</span>
-                    <span class="text-muted mx-1">—</span>
-                    <span class="text-secondary">108</span>
-                  </td>
-                  <td class="py-3">
-                    <div class="fw-semibold text-dark">LeBron James</div>
-                    <div class="text-secondary small">28 pts, 11 ast, 9 reb</div>
-                  </td>
-                  <td class="py-3 pe-3 text-secondary small">
-                    Quasi triple-double décisif et verrouillage défensif impérial dans le money-time.
-                  </td>
-                </tr>
+              <tr>
+                <td>
+                  <span class="fw-bold text-dark">Los Angeles Lakers</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Denver Nuggets</span>
+                </td>
+                <td class="text-center score-display">
+                  <span class="fw-bold text-dark">114</span>
+                  <span class="text-muted mx-1">—</span>
+                  <span class="text-secondary">108</span>
+                </td>
+                <td>
+                  <div class="fw-semibold text-dark">LeBron James</div>
+                  <div class="text-secondary small">28 pts, 11 ast, 9 reb</div>
+                </td>
+                <td class="text-secondary small">
+                  Quasi triple-double décisif et verrouillage défensif impérial dans le money-time.
+                </td>
+              </tr>
 
-                <tr>
-                  <td class="py-3 ps-3">
-                    <span class="fw-semibold text-dark">Milwaukee Bucks</span>
-                    <span class="text-muted mx-1">/</span>
-                    <span class="text-secondary">Philadelphia 76ers</span>
-                  </td>
-                  <td class="py-3 text-center score-digits">
-                    <span class="fw-bold text-dark">124</span>
-                    <span class="text-muted mx-1">—</span>
-                    <span class="text-secondary">117</span>
-                  </td>
-                  <td class="py-3">
-                    <div class="fw-semibold text-dark">Giannis Antetokounmpo</div>
-                    <div class="text-secondary small">41 pts, 13 reb</div>
-                  </td>
-                  <td class="py-3 pe-3 text-secondary small">
-                    Domination aérienne totale sous le cercle avec plus de 65% d'adresse au tir.
-                  </td>
-                </tr>
+              <tr>
+                <td>
+                  <span class="fw-bold text-dark">Milwaukee Bucks</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Philadelphia 76ers</span>
+                </td>
+                <td class="text-center score-display">
+                  <span class="fw-bold text-dark">124</span>
+                  <span class="text-muted mx-1">—</span>
+                  <span class="text-secondary">117</span>
+                </td>
+                <td>
+                  <div class="fw-semibold text-dark">Giannis Antetokounmpo</div>
+                  <div class="text-secondary small">41 pts, 13 reb</div>
+                </td>
+                <td class="text-secondary small">
+                  Domination aérienne totale sous le cercle avec plus de 65% d'adresse au tir.
+                </td>
+              </tr>
 
-                <tr>
-                  <td class="py-3 ps-3">
-                    <span class="fw-semibold text-dark">Dallas Mavericks</span>
-                    <span class="text-muted mx-1">/</span>
-                    <span class="text-secondary">Phoenix Suns</span>
-                  </td>
-                  <td class="py-3 text-center score-digits">
-                    <span class="fw-bold text-dark">120</span>
-                    <span class="text-muted mx-1">—</span>
-                    <span class="text-secondary">119</span>
-                  </td>
-                  <td class="py-3">
-                    <div class="fw-semibold text-dark">Luka Dončić</div>
-                    <div class="text-secondary small">39 pts, 10 ast</div>
-                  </td>
-                  <td class="py-3 pe-3 text-secondary small">
-                    Tir clutch à 3 points au buzzer pour sceller la victoire à l'ultime seconde.
-                  </td>
-                </tr>
+              <tr>
+                <td>
+                  <span class="fw-bold text-dark">Dallas Mavericks</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Phoenix Suns</span>
+                </td>
+                <td class="text-center score-display">
+                  <span class="fw-bold text-dark">120</span>
+                  <span class="text-muted mx-1">—</span>
+                  <span class="text-secondary">119</span>
+                </td>
+                <td>
+                  <div class="fw-semibold text-dark">Luka Dončić</div>
+                  <div class="text-secondary small">39 pts, 10 ast</div>
+                </td>
+                <td class="text-secondary small">
+                  Tir clutch à 3 points au buzzer pour sceller la victoire à l'ultime seconde.
+                </td>
+              </tr>
 
-                <tr>
-                  <td class="py-3 ps-3">
-                    <span class="fw-semibold text-dark">OKC Thunder</span>
-                    <span class="text-muted mx-1">/</span>
-                    <span class="text-secondary">Minnesota Timberwolves</span>
-                  </td>
-                  <td class="py-3 text-center score-digits">
-                    <span class="fw-bold text-dark">109</span>
-                    <span class="text-muted mx-1">—</span>
-                    <span class="text-secondary">105</span>
-                  </td>
-                  <td class="py-3">
-                    <div class="fw-semibold text-dark">Shai Gilgeous-Alexander</div>
-                    <div class="text-secondary small">33 pts, 6 ast</div>
-                  </td>
-                  <td class="py-3 pe-3 text-secondary small">
-                    Duel défensif sous haute tension scellé avec un sans-faute sur la ligne des lancers francs.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              <tr>
+                <td>
+                  <span class="fw-bold text-dark">OKC Thunder</span>
+                  <span class="text-muted mx-1">/</span>
+                  <span class="text-secondary">Minnesota Timberwolves</span>
+                </td>
+                <td class="text-center score-display">
+                  <span class="fw-bold text-dark">109</span>
+                  <span class="text-muted mx-1">—</span>
+                  <span class="text-secondary">105</span>
+                </td>
+                <td>
+                  <div class="fw-semibold text-dark">Shai Gilgeous-Alexander</div>
+                  <div class="text-secondary small">33 pts, 6 ast</div>
+                </td>
+                <td class="text-secondary small">
+                  Duel défensif sous haute tension scellé avec un sans-faute sur la ligne des lancers francs.
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="text-center text-secondary small mt-4 pt-2">
-          Réalisé avec Bootstrap 5.3.8 · Design Glassmorphism iOS natif
+        <!-- Pied de page épuré -->
+        <div class="text-center text-secondary small mt-5 pt-3">
+          Bootstrap 5.3.8 · Interface ouverte sans cards · Effets iOS dynamiques
         </div>
 
       </div>
@@ -515,6 +507,4 @@
     <!-- Bootstrap 5.3.8 Bundle JS (Règle obligatoire) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   </body>
-</html>
-
 </html>
