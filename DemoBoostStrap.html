@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="fr" class="h-100">
+<html lang="fr" class="h-100" data-bs-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NBA Highlights & Scores - Édition 4K</title>
+    <title>NBA Night Tracker · Scores, Boxscores & Analyse</title>
     
     <!-- Bootstrap 5.3.8 CSS (Règle obligatoire) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -13,9 +13,32 @@
 
     <style>
       :root {
-        --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --system-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         --page-bg: #f8f9fa;
-        --ios-glass-hover: rgba(255, 255, 255, 0.88);
+        --text-primary: #111827;
+        --text-muted: #6b7280;
+        --nav-glass-bg: rgba(255, 255, 255, 0.2);
+        --nav-glass-border: rgba(255, 255, 255, 0.35);
+        --nav-scrolled-bg: rgba(255, 255, 255, 0.85);
+        --nav-scrolled-border: rgba(255, 255, 255, 0.95);
+        --table-row-hover: rgba(255, 255, 255, 0.95);
+        --stat-bg: rgba(0, 0, 0, 0.35);
+        --stat-border: rgba(255, 255, 255, 0.25);
+        --border-subtle: #e5e7eb;
+      }
+
+      [data-bs-theme="dark"] {
+        --page-bg: #0b0f19;
+        --text-primary: #f9fafb;
+        --text-muted: #9ca3af;
+        --nav-glass-bg: rgba(15, 23, 42, 0.4);
+        --nav-glass-border: rgba(255, 255, 255, 0.15);
+        --nav-scrolled-bg: rgba(15, 23, 42, 0.88);
+        --nav-scrolled-border: rgba(255, 255, 255, 0.18);
+        --table-row-hover: rgba(30, 41, 59, 0.75);
+        --stat-bg: rgba(15, 23, 42, 0.65);
+        --stat-border: rgba(255, 255, 255, 0.15);
+        --border-subtle: #1f2937;
       }
 
       html {
@@ -23,16 +46,17 @@
       }
 
       body {
-        font-family: var(--ios-font);
+        font-family: var(--system-font);
         background-color: var(--page-bg);
-        color: #1d1d1f;
+        color: var(--text-primary);
         margin: 0;
         padding: 0;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
+        transition: background-color 0.35s ease, color 0.35s ease;
       }
 
-      /* BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS */
+      /* Navigation fluide style iOS transparent */
       .ios-nav-transparent {
         position: fixed;
         top: 1.25rem;
@@ -41,79 +65,81 @@
         z-index: 1040;
         width: calc(100% - 3rem);
         max-width: 1240px;
-        background: rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(18px) saturate(180%);
-        -webkit-backdrop-filter: blur(18px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: var(--nav-glass-bg);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid var(--nav-glass-border);
         border-radius: 999px;
-        padding: 0.75rem 2rem;
+        padding: 0.7rem 1.8rem;
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .ios-nav-transparent:hover {
-        background: rgba(255, 255, 255, 0.22);
-        border-color: rgba(255, 255, 255, 0.55);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      .ios-nav-transparent.scrolled {
+        background: var(--nav-scrolled-bg);
+        border-color: var(--nav-scrolled-border);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
       }
 
-      /* Textes et liens dans la barre transparente sur le héros */
       .nav-brand-text {
-        color: #ffffff;
         font-weight: 700;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        letter-spacing: -0.01em;
+        color: #ffffff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
         transition: color 0.25s ease;
       }
+      .ios-nav-transparent.scrolled .nav-brand-text {
+        color: var(--text-primary);
+        text-shadow: none;
+      }
+
       .nav-link-item {
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(255, 255, 255, 0.9);
         text-decoration: none;
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-        transition: color 0.2s ease, transform 0.2s ease;
+        font-size: 0.88rem;
+        font-weight: 500;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+        transition: color 0.2s ease;
       }
       .nav-link-item:hover {
         color: #ffffff;
-        transform: translateY(-1px);
-      }
-      .nav-cta-btn {
-        background: rgba(255, 255, 255, 0.25);
-        color: #ffffff;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        transition: all 0.25s ease;
-      }
-      .nav-cta-btn:hover {
-        background: #ffffff;
-        color: #000000;
-        border-color: #ffffff;
-      }
-
-      /* État dynamique au défilement (scrolled) */
-      .ios-nav-transparent.scrolled {
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: blur(28px) saturate(200%);
-        -webkit-backdrop-filter: blur(28px) saturate(200%);
-        border-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      }
-      .ios-nav-transparent.scrolled .nav-brand-text {
-        color: #111111;
-        text-shadow: none;
       }
       .ios-nav-transparent.scrolled .nav-link-item {
-        color: #555555;
+        color: var(--text-muted);
         text-shadow: none;
       }
       .ios-nav-transparent.scrolled .nav-link-item:hover {
-        color: #000000;
-      }
-      .ios-nav-transparent.scrolled .nav-cta-btn {
-        background: #111111;
-        color: #ffffff;
-        border-color: #111111;
+        color: var(--text-primary);
       }
 
-      /* Section Héro Plein Écran (100vh) SANS AUCUN OVERLAY et SANS CARDS */
+      /* Sélecteur de mode sombre / clair */
+      .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: #ffffff;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .theme-toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: rotate(20deg);
+      }
+      .ios-nav-transparent.scrolled .theme-toggle-btn {
+        background: rgba(0, 0, 0, 0.06);
+        border-color: var(--border-subtle);
+        color: var(--text-primary);
+      }
+      [data-bs-theme="dark"] .ios-nav-transparent.scrolled .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+      }
+
+      /* Section Héro Plein Écran (100vh) - Images changeantes sans overlay */
       .hero-fullscreen {
         position: relative;
         min-height: 100vh;
@@ -121,49 +147,42 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a6/Stephen_Curry_Shooting.jpg');
         background-size: cover;
         background-position: center 30%;
         background-repeat: no-repeat;
         padding-top: 7rem;
-        padding-bottom: 2.5rem;
+        padding-bottom: 3rem;
+        transition: background-image 0.6s ease-in-out, background-position 0.15s ease-out;
         will-change: background-position;
-        transition: background-position 0.15s ease-out;
       }
 
-      .hero-text-shadow {
-        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-      }
-
-      .hero-lead-shadow {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-        color: rgba(255, 255, 255, 0.95);
-      }
-
-      .open-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: rgba(0, 0, 0, 0.35);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 999px;
-        padding: 0.4rem 1.1rem;
-        font-size: 0.82rem;
+      .editorial-label {
+        font-size: 0.8rem;
         font-weight: 600;
-        color: #ffffff;
-        letter-spacing: 0.04em;
         text-transform: uppercase;
-        transition: all 0.25s ease;
-      }
-      .open-badge:hover {
-        background: rgba(255, 255, 255, 0.85);
-        color: #000000;
-        border-color: #ffffff;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.9);
+        display: inline-block;
       }
 
-      /* CTA style iOS interactifs */
+      .hero-headline {
+        font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.12;
+        color: #ffffff;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+      }
+
+      .hero-standfirst {
+        font-size: clamp(1rem, 1.25vw, 1.15rem);
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1.6;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        max-width: 580px;
+      }
+
+      /* Boutons CTA élégants */
       .interactive-cta {
         position: relative;
         overflow: hidden;
@@ -171,53 +190,50 @@
         will-change: transform;
       }
 
-      .btn-ios-pill-primary {
+      .btn-editorial-primary {
         background: #ffffff;
         color: #000000;
-        border: 1px solid rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.9);
         border-radius: 999px;
         font-weight: 600;
-        padding: 0.9rem 2.2rem;
-        font-size: 0.95rem;
+        padding: 0.85rem 2rem;
+        font-size: 0.92rem;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out;
+        gap: 0.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .btn-ios-pill-primary:hover {
-        background: rgba(255, 255, 255, 0.98);
+      .btn-editorial-primary:hover {
+        background: #f3f4f6;
         color: #000000;
-        backdrop-filter: blur(28px) saturate(220%);
-        -webkit-backdrop-filter: blur(28px) saturate(220%);
-        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.32);
       }
 
-      .btn-ios-pill-glass {
-        background: rgba(255, 255, 255, 0.32);
+      .btn-editorial-secondary {
+        background: rgba(255, 255, 255, 0.25);
         color: #ffffff;
-        backdrop-filter: blur(18px) saturate(180%);
-        -webkit-backdrop-filter: blur(18px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
         border-radius: 999px;
         font-weight: 600;
-        padding: 0.9rem 2.2rem;
-        font-size: 0.95rem;
+        padding: 0.85rem 2rem;
+        font-size: 0.92rem;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out;
+        gap: 0.5rem;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .btn-ios-pill-glass:hover {
-        background: rgba(255, 255, 255, 0.9);
+      .btn-editorial-secondary:hover {
+        background: rgba(255, 255, 255, 0.85);
         color: #000000;
-        backdrop-filter: blur(34px) saturate(220%);
-        -webkit-backdrop-filter: blur(34px) saturate(220%);
         border-color: #ffffff;
-        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32), inset 0 1px 2px rgba(255, 255, 255, 1);
+        transform: translateY(-2px);
       }
 
       .interactive-cta::after {
@@ -225,287 +241,245 @@
         position: absolute;
         top: var(--spotlight-y, -100%);
         left: var(--spotlight-x, -100%);
-        width: 140px;
-        height: 140px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 70%);
+        width: 130px;
+        height: 130px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
         transform: translate(-50%, -50%);
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.25s ease;
+        transition: opacity 0.2s ease;
       }
       .interactive-cta:hover::after {
         opacity: 1;
       }
 
-      /* Indicateurs statistiques ouverts */
-      .open-stat-item {
-        background: rgba(0, 0, 0, 0.25);
+      /* Indicateurs de performances réalistes */
+      .stat-badge-open {
+        background: var(--stat-bg);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 1.25rem;
-        padding: 1rem 1.4rem;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out;
-        will-change: transform;
-      }
-      .open-stat-item:hover {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(30px) saturate(210%);
-        -webkit-backdrop-filter: blur(30px) saturate(210%);
-        border-color: #ffffff;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-      }
-      .open-stat-item:hover .stat-num {
-        color: #000000 !important;
-      }
-      .open-stat-item:hover .stat-lbl {
-        color: #444444 !important;
-      }
-
-      .scroll-pill-hint {
-        background: rgba(255, 255, 255, 0.45);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.65);
-        color: #1d1d1f;
-        border-radius: 999px;
-        padding: 0.65rem 1.6rem;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
+        border: 1px solid var(--stat-border);
+        border-radius: 1rem;
+        padding: 0.9rem 1.4rem;
         transition: all 0.25s ease;
       }
-      .scroll-pill-hint:hover {
-        background: rgba(255, 255, 255, 0.95);
-        color: #000000;
+      .stat-badge-open:hover {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: #ffffff;
         transform: translateY(-2px);
       }
+      .stat-badge-open:hover .stat-val,
+      .stat-badge-open:hover .stat-lbl {
+        color: #111111 !important;
+      }
 
-      /* TABLEAU SANS CARDS */
-      .table-open {
+      /* TABLEAU EN DISPOSITION OUVERTE (ZÉRO CARDS) */
+      .table-editorial {
         --bs-table-bg: transparent;
         border-collapse: separate;
         border-spacing: 0 0.5rem;
         width: 100%;
       }
-      .table-open th {
-        font-size: 0.75rem;
+      .table-editorial th {
+        font-size: 0.74rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #86868b;
+        color: var(--text-muted);
         font-weight: 600;
         border: none;
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.25rem;
       }
-      .table-open td {
+      .table-editorial td {
         border: none;
-        padding: 1.25rem 1.5rem;
+        padding: 1.25rem;
         vertical-align: middle;
         background: transparent;
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: all 0.2s ease;
+        color: var(--text-primary);
       }
 
-      .table-open tbody tr td:first-child {
-        border-top-left-radius: 1rem;
-        border-bottom-left-radius: 1rem;
+      .table-editorial tbody tr td:first-child {
+        border-top-left-radius: 0.85rem;
+        border-bottom-left-radius: 0.85rem;
       }
-      .table-open tbody tr td:last-child {
-        border-top-right-radius: 1rem;
-        border-bottom-right-radius: 1rem;
-      }
-
-      .reveal-item {
-        opacity: 0;
-        transform: translateY(22px);
-        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform;
-      }
-      .reveal-item.revealed {
-        opacity: 1;
-        transform: translateY(0);
+      .table-editorial tbody tr td:last-child {
+        border-top-right-radius: 0.85rem;
+        border-bottom-right-radius: 0.85rem;
       }
 
-      .table-open tbody tr {
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      .table-editorial tbody tr {
+        transition: all 0.2s ease;
         cursor: default;
-        position: relative;
       }
-      .table-open tbody tr:hover td {
-        background-color: var(--ios-glass-hover);
-        backdrop-filter: blur(24px) saturate(200%);
-        -webkit-backdrop-filter: blur(24px) saturate(200%);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      .table-editorial tbody tr:hover td {
+        background-color: var(--table-row-hover);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
       }
-      .table-open tbody tr:hover {
+      .table-editorial tbody tr:hover {
         transform: translateY(-2px);
       }
 
       .score-display {
         font-variant-numeric: tabular-nums;
         font-weight: 700;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.02em;
       }
 
-      .hero-fade-in {
-        animation: heroFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-      @keyframes heroFade {
-        from { opacity: 0; transform: translateY(18px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* SECTION PARALLAXE BASKETBALL */
-      .parallax-basket-section {
+      /* SECTION PARALLAXE PLEINE LARGEUR (W-100) AU SCROLL */
+      .parallax-fullwidth-section {
         position: relative;
-        min-height: 520px;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        min-height: 540px;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        border-radius: 2rem;
-        margin: 4rem 1.5rem 2rem 1.5rem;
       }
-      .parallax-basket-bg {
+      .parallax-fullwidth-bg {
         position: absolute;
-        top: -25%;
+        top: -30%;
         left: 0;
         width: 100%;
-        height: 150%;
-        background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/aa/2011-06-07_Basketball_in_hoop_still_shot.jpg');
+        height: 160%;
         background-size: cover;
         background-position: center;
         will-change: transform;
         pointer-events: none;
+        transition: background-image 0.6s ease-in-out;
       }
-      .parallax-content {
+      .parallax-content-container {
         position: relative;
         z-index: 2;
-        max-width: 720px;
+        max-width: 760px;
         margin: 0 auto;
+      }
+
+      /* Animation reveal au scroll */
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+      }
+      .reveal-item.revealed {
+        opacity: 1;
+        transform: translateY(0);
       }
     </style>
   </head>
   <body>
 
-    <!-- BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS -->
+    <!-- BARRE DE NAVIGATION FLOTTANTE STYLE IOS TRANSPARENT -->
     <nav class="ios-nav-transparent d-flex justify-content-between align-items-center" id="mainNav">
       <div class="d-flex align-items-center gap-2">
         <span class="badge rounded-circle bg-dark p-2 text-white"><i class="bi bi-dribbble"></i></span>
-        <span class="nav-brand-text">NBA Highlights</span>
+        <span class="nav-brand-text">NBA Tracker</span>
       </div>
+      
       <div class="d-none d-md-flex align-items-center gap-4">
         <a href="#hero" class="nav-link-item">Accueil</a>
         <a href="#tableau" class="nav-link-item">Résultats</a>
-        <a href="#academie" class="nav-link-item">Académie</a>
-        <a href="etudiants.html" class="nav-link-item text-warning"><i class="bi bi-people me-1"></i>Étudiants Réunion</a>
+        <a href="#academie" class="nav-link-item">Pôle Réunion</a>
+        <a href="etudiants.html" class="nav-link-item fw-semibold text-warning"><i class="bi bi-people me-1"></i>Étudiants 974</a>
       </div>
-      <a href="etudiants.html" class="btn btn-sm nav-cta-btn rounded-pill px-3 py-1">Voir la Relève</a>
+
+      <div class="d-flex align-items-center gap-2">
+        <!-- Bouton bascule Mode Sombre / Clair -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Basculer le mode sombre/clair" title="Changer de thème">
+          <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+        </button>
+        <a href="etudiants.html" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Pôle Espoirs</a>
+      </div>
     </nav>
 
-    <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - AUCUNE CARD -->
-    <header id="hero" class="hero-fullscreen px-3 px-md-5">
+    <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - IMAGES DYNAMIQUES JOUR / NUIT SANS OVERLAY -->
+    <header id="hero" class="hero-fullscreen px-3 px-md-5"
+      data-light-bg="https://upload.wikimedia.org/wikipedia/commons/a/a6/Stephen_Curry_Shooting.jpg"
+      data-dark-bg="https://upload.wikimedia.org/wikipedia/commons/4/40/Stephen_Curry_%2833140701266%29.jpg">
       
-      <!-- Ligne principale avec CTAs répartis à gauche et à droite (sans card) -->
       <div class="container-fluid px-lg-5 my-auto">
         <div class="row align-items-center justify-content-between g-5">
           
-          <!-- CONTENU GAUCHE AVEC CTA GAUCHE (Ouvert, sans card) -->
-          <div class="col-lg-5 col-xl-5 hero-fade-in" style="animation-delay: 0.1s;">
-            <div class="open-badge mb-3">
-              <i class="bi bi-broadcast text-warning"></i>
-              <span>Édition 4K · Stephen Curry</span>
-            </div>
+          <!-- BLOC GAUCHE AVEC CTA GAUCHE -->
+          <div class="col-lg-6 col-xl-5">
+            <span class="editorial-label mb-2">
+              <i class="bi bi-calendar3 me-1"></i> Nuit NBA du 20 octobre 2026
+            </span>
             
-            <h1 class="display-5 fw-bold text-white mb-3 hero-text-shadow" style="letter-spacing: -0.03em;">
-              L'Art du Tir & L'Intensité NBA.
+            <h1 class="hero-headline mb-3">
+              Boston résiste aux Warriors, Tatum dicte le tempo dans le money-time.
             </h1>
             
-            <p class="fs-5 hero-lead-shadow mb-4" style="line-height: 1.55;">
-              La pureté du geste au sommet du basketball mondial. Retrouvez les comptes-rendus des rencontres décisives et l'impact des plus grands tireurs de la ligue.
+            <p class="hero-standfirst mb-4">
+              Cinq affiches décortiquées : duel sous haute tension dans la baie de San Francisco, exploit au buzzer à Phoenix et le récapitulatif complet des performances individuelles.
             </p>
             
-            <!-- CTA À GAUCHE AVEC ANIMATION JS (Tilt 3D & Reflet Curseur) -->
+            <!-- CTA À GAUCHE -->
             <div>
-              <a href="#tableau" class="btn-ios-pill-primary interactive-cta">
-                <i class="bi bi-table"></i> Consulter les Derniers Matchs
+              <a href="#tableau" class="btn-editorial-primary interactive-cta">
+                <i class="bi bi-table"></i> Voir les 5 Boxscores de la Nuit
               </a>
             </div>
           </div>
 
-          <!-- CONTENU DROITE AVEC CTA DROITE (Ouvert, sans card) -->
-          <div class="col-lg-5 col-xl-5 text-lg-end hero-fade-in" style="animation-delay: 0.25s;">
+          <!-- BLOC DROITE AVEC CTA DROITE -->
+          <div class="col-lg-5 col-xl-5 text-lg-end">
             <div class="d-inline-block text-start mb-4">
-              <div class="text-white-50 text-uppercase small fw-bold mb-3 text-lg-end" style="letter-spacing: 0.08em;">
-                Données & Performances
+              <div class="editorial-label mb-3 text-lg-end d-block">
+                Points Clés de la Nuit
               </div>
               
-              <!-- Indicateurs ouverts avec compteurs numériques animés JS -->
               <div class="d-flex flex-wrap gap-3 justify-content-lg-end">
-                <div class="open-stat-item text-center interactive-tilt">
-                  <span class="d-block fw-bold fs-4 text-white stat-num" data-target="5" data-decimals="0">0</span>
-                  <span class="text-white-50 small stat-lbl">Matchs</span>
+                <div class="stat-badge-open text-center interactive-tilt">
+                  <span class="d-block fw-bold fs-4 text-white stat-val stat-num" data-target="5" data-decimals="0">0</span>
+                  <span class="text-white-50 small stat-lbl">Rencontres</span>
                 </div>
-                <div class="open-stat-item text-center interactive-tilt">
-                  <span class="d-block fw-bold fs-4 text-white stat-num" data-target="115.6" data-decimals="1">0.0</span>
-                  <span class="text-white-50 small stat-lbl">Pts Moy.</span>
+                <div class="stat-badge-open text-center interactive-tilt">
+                  <span class="d-block fw-bold fs-4 text-white stat-val stat-num" data-target="117" data-decimals="0">0</span>
+                  <span class="text-white-50 small stat-lbl">Pts Moy. Vainqueur</span>
                 </div>
-                <div class="open-stat-item text-center interactive-tilt">
-                  <span class="d-block fw-bold fs-4 text-white stat-num" data-target="35.2" data-decimals="1">0.0</span>
-                  <span class="text-white-50 small stat-lbl">Pts MVP</span>
+                <div class="stat-badge-open text-center interactive-tilt">
+                  <span class="d-block fw-bold fs-4 text-white stat-val stat-num" data-target="41" data-decimals="0">0</span>
+                  <span class="text-white-50 small stat-lbl">Top Scorer (Giannis)</span>
                 </div>
               </div>
             </div>
 
-            <!-- CTA À DROITE AVEC ANIMATION JS (Tilt 3D & Reflet Curseur) -->
+            <!-- CTA À DROITE -->
             <div>
-              <a href="#tableau" class="btn-ios-pill-glass interactive-cta">
-                <i class="bi bi-trophy text-warning"></i> Voir les Prestations MVP
+              <a href="etudiants.html" class="btn-editorial-secondary interactive-cta">
+                <i class="bi bi-mortarboard-fill"></i> Découvrir la Relève 974
               </a>
             </div>
           </div>
 
         </div>
       </div>
-
-      <!-- Bouton d'indication de scroll au bas de l'écran -->
-      <div class="text-center hero-fade-in" style="animation-delay: 0.4s;">
-        <a href="#tableau" class="scroll-pill-hint interactive-cta">
-          <span>Découvrir les résultats</span>
-          <i class="bi bi-arrow-down-short fs-5"></i>
-        </a>
-      </div>
-
     </header>
 
-    <!-- SECTION TABLEAU EN PLEIN ÉCRAN AÉRÉ ET OUVERT (SANS AUCUNE CARD) -->
+    <!-- SECTION TABLEAU OUVERT (ZÉRO CARDS) -->
     <main id="tableau" class="w-100 px-3 px-md-5 py-5">
       <div class="container-fluid px-lg-5">
         
-        <!-- En-tête ouvert et fluide -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4 pb-3 border-bottom reveal-item">
           <div>
-            <span class="text-uppercase small text-secondary fw-bold" style="letter-spacing: 0.08em; font-size: 0.75rem;">
-              Derniers Chocs de la Saison
-            </span>
-            <h2 class="h3 fw-bold text-dark mb-1">Rapports des Rencontres & MVP</h2>
-            <p class="text-secondary small mb-0">Survolez chaque ligne pour révéler l'effet de verre dynamique</p>
+            <span class="editorial-label text-secondary mb-1">Résultats Officiels</span>
+            <h2 class="h3 fw-bold mb-1">Comptes-Rendus & Statistiques des Matchs</h2>
+            <p class="text-muted small mb-0">Données validées de la saison régulière 2025-2026</p>
           </div>
           <div class="d-flex gap-2">
-            <span class="badge bg-white text-secondary border px-3 py-2 rounded-pill fw-medium">
-              <i class="bi bi-check2-circle text-success me-1"></i> Données validées
-            </span>
-            <span class="badge bg-white text-secondary border px-3 py-2 rounded-pill fw-medium">
-              4 Colonnes
+            <span class="badge border rounded-pill px-3 py-2 fw-medium">
+              <i class="bi bi-clock-history text-success me-1"></i> Résultats Définitifs
             </span>
           </div>
         </div>
 
-        <!-- Tableau aéré et fluide sans boîte fermée -->
         <div class="table-responsive">
-          <table class="table table-open align-middle">
+          <table class="table table-editorial align-middle">
             <thead>
               <tr class="reveal-item">
                 <th scope="col" style="width: 28%;">Équipe</th>
@@ -517,145 +491,209 @@
             <tbody>
               <tr class="reveal-item">
                 <td>
-                  <span class="fw-bold text-dark">Boston Celtics</span>
+                  <span class="fw-bold">Boston Celtics</span>
                   <span class="text-muted mx-1">/</span>
                   <span class="text-secondary">Golden State</span>
                 </td>
                 <td class="text-center score-display">
-                  <span class="fw-bold text-dark">118</span>
-                  <span class="text-muted mx-1">—</span>
-                  <span class="text-secondary">112</span>
+                  <span class="fw-bold text-success">118</span>
+                  <span class="text-muted mx-1">-</span>
+                  <span>112</span>
                 </td>
                 <td>
-                  <div class="fw-semibold text-dark">Jayson Tatum</div>
-                  <div class="text-secondary small">35 pts, 8 reb</div>
+                  <div class="fw-semibold">Jayson Tatum</div>
+                  <div class="text-muted small">35 pts, 8 reb, 5 ast</div>
                 </td>
-                <td class="text-secondary small">
-                  Écart décisif creusé dans le 4<sup>e</sup> quart-temps avec une série collective de 12-2.
+                <td class="text-muted small">
+                  Série décisive de 12-2 dans le 4e quart-temps initiée par deux tirs primés de Tatum.
                 </td>
               </tr>
 
               <tr class="reveal-item">
                 <td>
-                  <span class="fw-bold text-dark">Los Angeles Lakers</span>
+                  <span class="fw-bold">Los Angeles Lakers</span>
                   <span class="text-muted mx-1">/</span>
                   <span class="text-secondary">Denver Nuggets</span>
                 </td>
                 <td class="text-center score-display">
-                  <span class="fw-bold text-dark">114</span>
-                  <span class="text-muted mx-1">—</span>
-                  <span class="text-secondary">108</span>
+                  <span class="fw-bold text-success">114</span>
+                  <span class="text-muted mx-1">-</span>
+                  <span>108</span>
                 </td>
                 <td>
-                  <div class="fw-semibold text-dark">LeBron James</div>
-                  <div class="text-secondary small">28 pts, 11 ast, 9 reb</div>
+                  <div class="fw-semibold">LeBron James</div>
+                  <div class="text-muted small">28 pts, 11 ast, 9 reb</div>
                 </td>
-                <td class="text-secondary small">
-                  Quasi triple-double décisif et verrouillage défensif impérial dans le money-time.
+                <td class="text-muted small">
+                  Quasi triple-double décisif et solide défense sur Jokic dans la dernière minute.
                 </td>
               </tr>
 
               <tr class="reveal-item">
                 <td>
-                  <span class="fw-bold text-dark">Milwaukee Bucks</span>
+                  <span class="fw-bold">Milwaukee Bucks</span>
                   <span class="text-muted mx-1">/</span>
                   <span class="text-secondary">Philadelphia 76ers</span>
                 </td>
                 <td class="text-center score-display">
-                  <span class="fw-bold text-dark">124</span>
-                  <span class="text-muted mx-1">—</span>
-                  <span class="text-secondary">117</span>
+                  <span class="fw-bold text-success">124</span>
+                  <span class="text-muted mx-1">-</span>
+                  <span>117</span>
                 </td>
                 <td>
-                  <div class="fw-semibold text-dark">Giannis Antetokounmpo</div>
-                  <div class="text-secondary small">41 pts, 13 reb</div>
+                  <div class="fw-semibold">Giannis Antetokounmpo</div>
+                  <div class="text-muted small">41 pts, 13 reb, 6 ast</div>
                 </td>
-                <td class="text-secondary small">
-                  Domination aérienne totale sous le cercle avec plus de 65% d'adresse au tir.
+                <td class="text-muted small">
+                  Prestation ultra dominante dans la peinture avec 15/22 aux tirs.
                 </td>
               </tr>
 
               <tr class="reveal-item">
                 <td>
-                  <span class="fw-bold text-dark">Dallas Mavericks</span>
+                  <span class="fw-bold">Dallas Mavericks</span>
                   <span class="text-muted mx-1">/</span>
                   <span class="text-secondary">Phoenix Suns</span>
                 </td>
                 <td class="text-center score-display">
-                  <span class="fw-bold text-dark">120</span>
-                  <span class="text-muted mx-1">—</span>
-                  <span class="text-secondary">119</span>
+                  <span class="fw-bold text-success">120</span>
+                  <span class="text-muted mx-1">-</span>
+                  <span>119</span>
                 </td>
                 <td>
-                  <div class="fw-semibold text-dark">Luka Dončić</div>
-                  <div class="text-secondary small">39 pts, 10 ast</div>
+                  <div class="fw-semibold">Luka Dončić</div>
+                  <div class="text-muted small">39 pts, 10 ast, 8 reb</div>
                 </td>
-                <td class="text-secondary small">
-                  Tir clutch à 3 points au buzzer pour sceller la victoire à l'ultime seconde.
+                <td class="text-muted small">
+                  Step-back victorieux à 3 points sur la sirène après avoir effacé son défenseur direct.
                 </td>
               </tr>
 
               <tr class="reveal-item">
                 <td>
-                  <span class="fw-bold text-dark">OKC Thunder</span>
+                  <span class="fw-bold">OKC Thunder</span>
                   <span class="text-muted mx-1">/</span>
                   <span class="text-secondary">Minnesota Timberwolves</span>
                 </td>
                 <td class="text-center score-display">
-                  <span class="fw-bold text-dark">109</span>
-                  <span class="text-muted mx-1">—</span>
-                  <span class="text-secondary">105</span>
+                  <span class="fw-bold text-success">109</span>
+                  <span class="text-muted mx-1">-</span>
+                  <span>105</span>
                 </td>
                 <td>
-                  <div class="fw-semibold text-dark">Shai Gilgeous-Alexander</div>
-                  <div class="text-secondary small">33 pts, 6 ast</div>
+                  <div class="fw-semibold">Shai Gilgeous-Alexander</div>
+                  <div class="text-muted small">33 pts, 6 ast, 2 blk</div>
                 </td>
-                <td class="text-secondary small">
-                  Duel défensif sous haute tension scellé avec un sans-faute sur la ligne des lancers francs.
+                <td class="text-muted small">
+                  Duel défensif rude conclu par un 6/6 sur la ligne des lancers francs dans le money-time.
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- NOUVELLE SECTION PARALLAXE AVEC IMAGE DE BASKETBALL ET BOUTON VERS LA PAGE ÉTUDIANTS -->
-        <section class="parallax-basket-section" id="academie">
-          <div class="parallax-basket-bg" id="parallaxBg"></div>
-          <div class="parallax-content text-center px-4 py-5">
-            <div class="open-badge mb-3">
-              <i class="bi bi-geo-alt-fill text-danger"></i>
-              <span>Académie Espoirs · Île de La Réunion</span>
-            </div>
-            <h2 class="display-6 fw-bold text-white mb-3 hero-text-shadow">
-              La Relève du Basket Réunionnais
-            </h2>
-            <p class="fs-5 hero-lead-shadow mb-4" style="line-height: 1.6;">
-              Découvrez la génération montante d'étudiants réunionnais formés au tir, au physique et à la vision du jeu. Explorez leurs mensurations précises et leurs aptitudes mesurées.
-            </p>
-            <div class="pt-2">
-              <a href="etudiants.html" class="btn-ios-pill-primary interactive-cta">
-                <i class="bi bi-people-fill"></i> Découvrir la Liste des Étudiants Réunionnais
-              </a>
-            </div>
-          </div>
-        </section>
+      </div>
 
-        <!-- Pied de page épuré -->
-        <div class="text-center text-secondary small mt-5 pt-3">
-          Bootstrap 5.3.8 · Interface ouverte sans cards · Animations JS & Effets iOS
+      <!-- SECTION PARALLAXE PLEINE LARGEUR (W-100) AVEC DÉPLACEMENT AU SCROLL ET IMAGES CHANGEANTES -->
+      <section class="parallax-fullwidth-section mt-5" id="academie">
+        <div class="parallax-fullwidth-bg" id="parallaxBg"
+          data-light-bg="https://upload.wikimedia.org/wikipedia/commons/a/aa/2011-06-07_Basketball_in_hoop_still_shot.jpg"
+          data-dark-bg="https://upload.wikimedia.org/wikipedia/commons/e/e2/Autumn_night_at_basketball_court_at_Havukoski_youth_centre%2C_Havukoski%2C_Vantaa%2C_Finland%2C_2021_October.jpg">
         </div>
+        <div class="parallax-content-container text-center px-4 py-5">
+          <span class="editorial-label text-warning mb-2">
+            <i class="bi bi-geo-alt-fill me-1"></i> Pôle Espoirs · La Réunion (974)
+          </span>
+          <h2 class="display-6 fw-bold text-white mb-3" style="text-shadow: 0 2px 14px rgba(0,0,0,0.7);">
+            Détection Académie : Les Talents Réunionnais
+          </h2>
+          <p class="fs-5 text-white mb-4" style="line-height: 1.6; text-shadow: 0 2px 10px rgba(0,0,0,0.7);">
+            Revue d'effectif des 12 étudiants réunionnais suivis pour les filières de haut niveau : mensurations physiques, clubs formateurs et indices d'aptitude au tir.
+          </p>
+          <div>
+            <a href="etudiants.html" class="btn-editorial-primary interactive-cta">
+              <i class="bi bi-mortarboard-fill"></i> Consulter les 12 Fiches Profils Étudiants
+            </a>
+          </div>
+        </div>
+      </section>
 
+      <div class="text-center text-muted small mt-5 pt-3">
+        Bootstrap 5.3.8 · Interface ouverte sans cards · Mode Sombre & Parallaxe Dynamique
       </div>
     </main>
 
     <!-- Bootstrap 5.3.8 Bundle JS (Règle obligatoire) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-    <!-- ANIMATIONS JS POUR L'UI & UX (Survol, Tilt 3D, Spotlight Verre, Parallaxe, Compteurs, Scroll Reveal) -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        
-        // 1. REFLET LUMINEUX DE VERRE DYNAMIQUE SUR LES CTA (Spotlight Mouse Tracking)
+
+        // 1. GESTION DU MODE SOMBRE / CLAIR AVEC CHANGEMENT D'IMAGES DYNAMIQUE
+        const htmlElement = document.documentElement;
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const heroSection = document.getElementById('hero');
+        const parallaxBg = document.getElementById('parallaxBg');
+
+        // Récupérer le thème sauvegardé ou la préférence système
+        const savedTheme = localStorage.getItem('theme') || 
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        const applyTheme = (theme) => {
+          htmlElement.setAttribute('data-bs-theme', theme);
+          localStorage.setItem('theme', theme);
+
+          if (theme === 'dark') {
+            themeIcon.className = 'bi bi-sun-fill text-warning';
+            // Changement d'images vers le mode sombre (nocturne / contrasté)
+            if (heroSection) {
+              heroSection.style.backgroundImage = `url('${heroSection.getAttribute('data-dark-bg')}')`;
+            }
+            if (parallaxBg) {
+              parallaxBg.style.backgroundImage = `url('${parallaxBg.getAttribute('data-dark-bg')}')`;
+            }
+          } else {
+            themeIcon.className = 'bi bi-moon-stars-fill';
+            // Changement d'images vers le mode clair (lumineux / jour)
+            if (heroSection) {
+              heroSection.style.backgroundImage = `url('${heroSection.getAttribute('data-light-bg')}')`;
+            }
+            if (parallaxBg) {
+              parallaxBg.style.backgroundImage = `url('${parallaxBg.getAttribute('data-light-bg')}')`;
+            }
+          }
+        };
+
+        // Appliquer au chargement
+        applyTheme(savedTheme);
+
+        // Bascule au clic
+        themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = htmlElement.getAttribute('data-bs-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          applyTheme(newTheme);
+        });
+
+        // 2. PARALLAXE FLUIDE AU SCROLL POUR LA SECTION PLEINE LARGEUR
+        const academieSection = document.getElementById('academie');
+        if (parallaxBg && academieSection) {
+          const updateParallax = () => {
+            const rect = academieSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            if (rect.top <= windowHeight && rect.bottom >= 0) {
+              // Calcul précis du décalage relatif au scroll
+              const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+              const yOffset = (scrollProgress - 0.5) * 120; // 120px de translation parallaxe
+              parallaxBg.style.transform = `translate3d(0, ${yOffset}px, 0)`;
+            }
+          };
+
+          window.addEventListener('scroll', updateParallax, { passive: true });
+          updateParallax();
+        }
+
+        // 3. EFFET DE REFLET DE VERRE DYNAMIQUE SUR LES BOUTONS CTA (Spotlight Mouse Tracking)
         const interactiveCtas = document.querySelectorAll('.interactive-cta');
         interactiveCtas.forEach(cta => {
           cta.addEventListener('mousemove', (e) => {
@@ -667,8 +705,8 @@
 
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const tiltX = ((y - centerY) / centerY) * -5;
-            const tiltY = ((x - centerX) / centerX) * 5;
+            const tiltX = ((y - centerY) / centerY) * -4;
+            const tiltY = ((x - centerX) / centerX) * 4;
             cta.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
           });
 
@@ -677,7 +715,7 @@
           });
         });
 
-        // 2. INCLINAISON 3D TILT AU SURVOL SUR LES ÉLÉMENTS DE STATS
+        // 4. INCLINAISON 3D TILT SUR LES BADGES STATS
         const tiltItems = document.querySelectorAll('.interactive-tilt');
         tiltItems.forEach(item => {
           item.addEventListener('mousemove', (e) => {
@@ -686,9 +724,9 @@
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const tiltX = ((y - centerY) / centerY) * -8;
-            const tiltY = ((x - centerX) / centerX) * 8;
-            item.style.transform = `perspective(500px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`;
+            const tiltX = ((y - centerY) / centerY) * -6;
+            const tiltY = ((x - centerX) / centerX) * 6;
+            item.style.transform = `perspective(500px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-3px)`;
           });
 
           item.addEventListener('mouseleave', () => {
@@ -696,43 +734,13 @@
           });
         });
 
-        // 3. EFFET DE PARALLAXE DOUX AU MOUVEMENT DE LA SOURIS SUR LE HÉRO 4K
-        const heroSection = document.getElementById('hero');
-        if (heroSection) {
-          heroSection.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const xOffset = (clientX / window.innerWidth - 0.5) * 8;
-            const yOffset = (clientY / window.innerHeight - 0.5) * 8;
-            heroSection.style.backgroundPosition = `calc(50% + ${xOffset}px) calc(30% + ${yOffset}px)`;
-          });
-
-          heroSection.addEventListener('mouseleave', () => {
-            heroSection.style.backgroundPosition = 'center 30%';
-          });
-        }
-
-        // 4. EFFET DE PARALLAXE AU SCROLL POUR LA SECTION BASKETBALL
-        const parallaxBg = document.getElementById('parallaxBg');
-        const academieSection = document.getElementById('academie');
-        if (parallaxBg && academieSection) {
-          window.addEventListener('scroll', () => {
-            const rect = academieSection.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            if (rect.top <= windowHeight && rect.bottom >= 0) {
-              const distance = (windowHeight - rect.top) / (windowHeight + rect.height);
-              const yTranslate = (distance - 0.5) * 60;
-              parallaxBg.style.transform = `translateY(${yTranslate}px)`;
-            }
-          }, { passive: true });
-        }
-
         // 5. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
         const animateCounters = () => {
           const counters = document.querySelectorAll('.stat-num');
           counters.forEach(counter => {
             const target = parseFloat(counter.getAttribute('data-target'));
             const decimals = parseInt(counter.getAttribute('data-decimals'), 10) || 0;
-            const duration = 1400;
+            const duration = 1200;
             const startTime = performance.now();
 
             const updateNumber = (currentTime) => {
@@ -752,9 +760,9 @@
             requestAnimationFrame(updateNumber);
           });
         };
-        setTimeout(animateCounters, 350);
+        setTimeout(animateCounters, 200);
 
-        // 6. APPARITION FLUIDE AU DÉFILEMENT (Scroll Reveal avec IntersectionObserver)
+        // 6. SCROLL REVEAL VIA INTERSECTION OBSERVER
         const revealItems = document.querySelectorAll('.reveal-item');
         const revealObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
@@ -764,16 +772,16 @@
             }
           });
         }, {
-          threshold: 0.12,
-          rootMargin: '0px 0px -40px 0px'
+          threshold: 0.1,
+          rootMargin: '0px 0px -30px 0px'
         });
 
         revealItems.forEach((item, index) => {
-          item.style.transitionDelay = `${(index % 8) * 85}ms`;
+          item.style.transitionDelay = `${(index % 8) * 60}ms`;
           revealObserver.observe(item);
         });
 
-        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR TRANSPARENTE AU SCROLL
+        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {

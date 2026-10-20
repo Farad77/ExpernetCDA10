@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="fr" class="h-100">
+<html lang="fr" class="h-100" data-bs-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Académie Basket Réunion - Étudiants & Détection</title>
+    <title>Pôle Espoirs Basket Réunion · Promotion 2026</title>
     
     <!-- Bootstrap 5.3.8 CSS (Règle obligatoire) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -13,9 +13,32 @@
 
     <style>
       :root {
-        --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --system-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         --page-bg: #f8f9fa;
-        --ios-glass-hover: rgba(255, 255, 255, 0.9);
+        --text-primary: #111827;
+        --text-muted: #6b7280;
+        --nav-glass-bg: rgba(255, 255, 255, 0.2);
+        --nav-glass-border: rgba(255, 255, 255, 0.35);
+        --nav-scrolled-bg: rgba(255, 255, 255, 0.85);
+        --nav-scrolled-border: rgba(255, 255, 255, 0.95);
+        --table-row-hover: rgba(255, 255, 255, 0.95);
+        --stat-bg: rgba(0, 0, 0, 0.35);
+        --stat-border: rgba(255, 255, 255, 0.25);
+        --border-subtle: #e5e7eb;
+      }
+
+      [data-bs-theme="dark"] {
+        --page-bg: #0b0f19;
+        --text-primary: #f9fafb;
+        --text-muted: #9ca3af;
+        --nav-glass-bg: rgba(15, 23, 42, 0.4);
+        --nav-glass-border: rgba(255, 255, 255, 0.15);
+        --nav-scrolled-bg: rgba(15, 23, 42, 0.88);
+        --nav-scrolled-border: rgba(255, 255, 255, 0.18);
+        --table-row-hover: rgba(30, 41, 59, 0.75);
+        --stat-bg: rgba(15, 23, 42, 0.65);
+        --stat-border: rgba(255, 255, 255, 0.15);
+        --border-subtle: #1f2937;
       }
 
       html {
@@ -23,16 +46,17 @@
       }
 
       body {
-        font-family: var(--ios-font);
+        font-family: var(--system-font);
         background-color: var(--page-bg);
-        color: #1d1d1f;
+        color: var(--text-primary);
         margin: 0;
         padding: 0;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
+        transition: background-color 0.35s ease, color 0.35s ease;
       }
 
-      /* BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS */
+      /* Navigation fluide style iOS */
       .ios-nav-transparent {
         position: fixed;
         top: 1.25rem;
@@ -41,77 +65,80 @@
         z-index: 1040;
         width: calc(100% - 3rem);
         max-width: 1240px;
-        background: rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(18px) saturate(180%);
-        -webkit-backdrop-filter: blur(18px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: var(--nav-glass-bg);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid var(--nav-glass-border);
         border-radius: 999px;
-        padding: 0.75rem 2rem;
+        padding: 0.7rem 1.8rem;
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .ios-nav-transparent:hover {
-        background: rgba(255, 255, 255, 0.22);
-        border-color: rgba(255, 255, 255, 0.55);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      .ios-nav-transparent.scrolled {
+        background: var(--nav-scrolled-bg);
+        border-color: var(--nav-scrolled-border);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
       }
 
       .nav-brand-text {
-        color: #ffffff;
         font-weight: 700;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        letter-spacing: -0.01em;
+        color: #ffffff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
         transition: color 0.25s ease;
       }
+      .ios-nav-transparent.scrolled .nav-brand-text {
+        color: var(--text-primary);
+        text-shadow: none;
+      }
+
       .nav-link-item {
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(255, 255, 255, 0.9);
         text-decoration: none;
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-        transition: color 0.2s ease, transform 0.2s ease;
+        font-size: 0.88rem;
+        font-weight: 500;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+        transition: color 0.2s ease;
       }
       .nav-link-item:hover {
         color: #ffffff;
-        transform: translateY(-1px);
-      }
-      .nav-cta-btn {
-        background: rgba(255, 255, 255, 0.25);
-        color: #ffffff;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        transition: all 0.25s ease;
-      }
-      .nav-cta-btn:hover {
-        background: #ffffff;
-        color: #000000;
-        border-color: #ffffff;
-      }
-
-      .ios-nav-transparent.scrolled {
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: blur(28px) saturate(200%);
-        -webkit-backdrop-filter: blur(28px) saturate(200%);
-        border-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      }
-      .ios-nav-transparent.scrolled .nav-brand-text {
-        color: #111111;
-        text-shadow: none;
       }
       .ios-nav-transparent.scrolled .nav-link-item {
-        color: #555555;
+        color: var(--text-muted);
         text-shadow: none;
       }
       .ios-nav-transparent.scrolled .nav-link-item:hover {
-        color: #000000;
-      }
-      .ios-nav-transparent.scrolled .nav-cta-btn {
-        background: #111111;
-        color: #ffffff;
-        border-color: #111111;
+        color: var(--text-primary);
       }
 
-      /* Section Héro Plein Écran (100vh) SANS OVERLAY et SANS CARDS */
+      .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: #ffffff;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .theme-toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.35);
+        transform: rotate(20deg);
+      }
+      .ios-nav-transparent.scrolled .theme-toggle-btn {
+        background: rgba(0, 0, 0, 0.06);
+        border-color: var(--border-subtle);
+        color: var(--text-primary);
+      }
+      [data-bs-theme="dark"] .ios-nav-transparent.scrolled .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+      }
+
+      /* Section Héro Plein Écran (100vh) - Images dynamiques */
       .hero-fullscreen {
         position: relative;
         min-height: 100vh;
@@ -119,49 +146,86 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/aa/2011-06-07_Basketball_in_hoop_still_shot.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         padding-top: 7rem;
-        padding-bottom: 2.5rem;
+        padding-bottom: 3rem;
+        transition: background-image 0.6s ease-in-out, background-position 0.15s ease-out;
         will-change: background-position;
-        transition: background-position 0.15s ease-out;
       }
 
-      .hero-text-shadow {
-        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.35);
+      .editorial-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.9);
+        display: inline-block;
       }
 
-      .hero-lead-shadow {
+      .hero-headline {
+        font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.12;
+        color: #ffffff;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65);
+      }
+
+      .hero-standfirst {
+        font-size: clamp(1rem, 1.25vw, 1.15rem);
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1.6;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
-        color: rgba(255, 255, 255, 0.95);
+        max-width: 600px;
       }
 
-      .open-badge {
+      .btn-editorial-primary {
+        background: #ffffff;
+        color: #000000;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 999px;
+        font-weight: 600;
+        padding: 0.85rem 2rem;
+        font-size: 0.92rem;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 999px;
-        padding: 0.4rem 1.1rem;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #ffffff;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        transition: all 0.25s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .open-badge:hover {
+      .btn-editorial-primary:hover {
+        background: #f3f4f6;
+        color: #000000;
+        transform: translateY(-2px);
+      }
+
+      .btn-editorial-secondary {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 999px;
+        font-weight: 600;
+        padding: 0.85rem 2rem;
+        font-size: 0.92rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .btn-editorial-secondary:hover {
         background: rgba(255, 255, 255, 0.85);
         color: #000000;
         border-color: #ffffff;
+        transform: translateY(-2px);
       }
 
-      /* CTA style iOS interactifs */
       .interactive-cta {
         position: relative;
         overflow: hidden;
@@ -169,181 +233,93 @@
         will-change: transform;
       }
 
-      .btn-ios-pill-primary {
-        background: #ffffff;
-        color: #000000;
-        border: 1px solid rgba(255, 255, 255, 0.95);
-        border-radius: 999px;
-        font-weight: 600;
-        padding: 0.9rem 2.2rem;
-        font-size: 0.95rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out;
-      }
-      .btn-ios-pill-primary:hover {
-        background: rgba(255, 255, 255, 0.98);
-        color: #000000;
-        backdrop-filter: blur(28px) saturate(220%);
-        -webkit-backdrop-filter: blur(28px) saturate(220%);
-        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35);
-      }
-
-      .btn-ios-pill-glass {
-        background: rgba(255, 255, 255, 0.32);
-        color: #ffffff;
-        backdrop-filter: blur(18px) saturate(180%);
-        -webkit-backdrop-filter: blur(18px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 999px;
-        font-weight: 600;
-        padding: 0.9rem 2.2rem;
-        font-size: 0.95rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out;
-      }
-      .btn-ios-pill-glass:hover {
-        background: rgba(255, 255, 255, 0.9);
-        color: #000000;
-        backdrop-filter: blur(34px) saturate(220%);
-        -webkit-backdrop-filter: blur(34px) saturate(220%);
-        border-color: #ffffff;
-        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32), inset 0 1px 2px rgba(255, 255, 255, 1);
-      }
-
       .interactive-cta::after {
         content: '';
         position: absolute;
         top: var(--spotlight-y, -100%);
         left: var(--spotlight-x, -100%);
-        width: 140px;
-        height: 140px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 70%);
+        width: 130px;
+        height: 130px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
         transform: translate(-50%, -50%);
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.25s ease;
+        transition: opacity 0.2s ease;
       }
       .interactive-cta:hover::after {
         opacity: 1;
       }
 
-      /* Indicateurs statistiques ouverts */
-      .open-stat-item {
-        background: rgba(0, 0, 0, 0.3);
+      .stat-badge-open {
+        background: var(--stat-bg);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 1.25rem;
-        padding: 1rem 1.4rem;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out;
-        will-change: transform;
-      }
-      .open-stat-item:hover {
-        background: rgba(255, 255, 255, 0.88);
-        backdrop-filter: blur(30px) saturate(210%);
-        -webkit-backdrop-filter: blur(30px) saturate(210%);
-        border-color: #ffffff;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-      }
-      .open-stat-item:hover .stat-num {
-        color: #000000 !important;
-      }
-      .open-stat-item:hover .stat-lbl {
-        color: #444444 !important;
-      }
-
-      .scroll-pill-hint {
-        background: rgba(255, 255, 255, 0.45);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.65);
-        color: #1d1d1f;
-        border-radius: 999px;
-        padding: 0.65rem 1.6rem;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
+        border: 1px solid var(--stat-border);
+        border-radius: 1rem;
+        padding: 0.9rem 1.4rem;
         transition: all 0.25s ease;
       }
-      .scroll-pill-hint:hover {
-        background: rgba(255, 255, 255, 0.95);
-        color: #000000;
+      .stat-badge-open:hover {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: #ffffff;
         transform: translateY(-2px);
       }
+      .stat-badge-open:hover .stat-val,
+      .stat-badge-open:hover .stat-lbl {
+        color: #111111 !important;
+      }
 
-      /* TABLEAU DES ÉTUDIANTS OUVERT (SANS AUCUNE CARD) */
-      .table-open {
+      /* TABLEAU EN DISPOSITION OUVERTE (ZÉRO CARDS) */
+      .table-editorial {
         --bs-table-bg: transparent;
         border-collapse: separate;
         border-spacing: 0 0.5rem;
         width: 100%;
       }
-      .table-open th {
-        font-size: 0.75rem;
+      .table-editorial th {
+        font-size: 0.74rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #86868b;
+        color: var(--text-muted);
         font-weight: 600;
         border: none;
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.25rem;
       }
-      .table-open td {
+      .table-editorial td {
         border: none;
-        padding: 1.25rem 1.5rem;
+        padding: 1.25rem;
         vertical-align: middle;
         background: transparent;
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: all 0.2s ease;
+        color: var(--text-primary);
       }
 
-      .table-open tbody tr td:first-child {
-        border-top-left-radius: 1rem;
-        border-bottom-left-radius: 1rem;
+      .table-editorial tbody tr td:first-child {
+        border-top-left-radius: 0.85rem;
+        border-bottom-left-radius: 0.85rem;
       }
-      .table-open tbody tr td:last-child {
-        border-top-right-radius: 1rem;
-        border-bottom-right-radius: 1rem;
-      }
-
-      .reveal-item {
-        opacity: 0;
-        transform: translateY(22px);
-        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform;
-      }
-      .reveal-item.revealed {
-        opacity: 1;
-        transform: translateY(0);
+      .table-editorial tbody tr td:last-child {
+        border-top-right-radius: 0.85rem;
+        border-bottom-right-radius: 0.85rem;
       }
 
-      .table-open tbody tr {
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      .table-editorial tbody tr {
+        transition: all 0.2s ease;
         cursor: default;
-        position: relative;
       }
-      .table-open tbody tr:hover td {
-        background-color: var(--ios-glass-hover);
-        backdrop-filter: blur(24px) saturate(200%);
-        -webkit-backdrop-filter: blur(24px) saturate(200%);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      .table-editorial tbody tr:hover td {
+        background-color: var(--table-row-hover);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
       }
-      .table-open tbody tr:hover {
+      .table-editorial tbody tr:hover {
         transform: translateY(-2px);
       }
 
       .aptitude-bar-bg {
         height: 6px;
-        background-color: rgba(0, 0, 0, 0.06);
+        background-color: rgba(125, 125, 125, 0.15);
         border-radius: 999px;
         overflow: hidden;
         margin-top: 0.35rem;
@@ -351,136 +327,128 @@
       .aptitude-bar-fill {
         height: 100%;
         border-radius: 999px;
-        background: linear-gradient(90deg, #30b0c7 0%, #34c759 100%);
-        transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        background: linear-gradient(90deg, #0284c7 0%, #10b981 100%);
       }
 
-      .hero-fade-in {
-        animation: heroFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
       }
-      @keyframes heroFade {
-        from { opacity: 0; transform: translateY(18px); }
-        to { opacity: 1; transform: translateY(0); }
+      .reveal-item.revealed {
+        opacity: 1;
+        transform: translateY(0);
       }
     </style>
   </head>
   <body>
 
-    <!-- BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS -->
+    <!-- BARRE DE NAVIGATION FLOTTANTE STYLE IOS TRANSPARENT -->
     <nav class="ios-nav-transparent d-flex justify-content-between align-items-center" id="mainNav">
       <div class="d-flex align-items-center gap-2">
         <span class="badge rounded-circle bg-dark p-2 text-white"><i class="bi bi-mortarboard"></i></span>
-        <span class="nav-brand-text">Académie Basket 974</span>
+        <span class="nav-brand-text">Pôle Espoirs 974</span>
       </div>
+      
       <div class="d-none d-md-flex align-items-center gap-4">
         <a href="DemoBoostStrap.html" class="nav-link-item"><i class="bi bi-arrow-left me-1"></i>Matchs NBA</a>
         <a href="#hero" class="nav-link-item">Accueil</a>
-        <a href="#tableau-etudiants" class="nav-link-item text-warning">Liste des Étudiants</a>
+        <a href="#tableau-etudiants" class="nav-link-item text-warning fw-semibold">Fiches Étudiants</a>
       </div>
-      <a href="DemoBoostStrap.html" class="btn btn-sm nav-cta-btn rounded-pill px-3 py-1">Retour NBA</a>
+
+      <div class="d-flex align-items-center gap-2">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Basculer le mode sombre/clair" title="Changer de thème">
+          <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+        </button>
+        <a href="DemoBoostStrap.html" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Retour NBA</a>
+      </div>
     </nav>
 
-    <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - AUCUNE CARD -->
-    <header id="hero" class="hero-fullscreen px-3 px-md-5">
+    <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - IMAGES DYNAMIQUES JOUR / NUIT SANS OVERLAY -->
+    <header id="hero" class="hero-fullscreen px-3 px-md-5"
+      data-light-bg="https://upload.wikimedia.org/wikipedia/commons/a/aa/2011-06-07_Basketball_in_hoop_still_shot.jpg"
+      data-dark-bg="https://upload.wikimedia.org/wikipedia/commons/e/e2/Autumn_night_at_basketball_court_at_Havukoski_youth_centre%2C_Havukoski%2C_Vantaa%2C_Finland%2C_2021_October.jpg">
       
-      <!-- CTAs répartis à gauche et à droite sans card -->
       <div class="container-fluid px-lg-5 my-auto">
         <div class="row align-items-center justify-content-between g-5">
           
           <!-- CONTENU GAUCHE AVEC CTA GAUCHE -->
-          <div class="col-lg-5 col-xl-5 hero-fade-in" style="animation-delay: 0.1s;">
-            <div class="open-badge mb-3">
-              <i class="bi bi-geo-alt-fill text-danger"></i>
-              <span>Île de La Réunion · Pôle Espoirs</span>
-            </div>
+          <div class="col-lg-6 col-xl-5">
+            <span class="editorial-label mb-2">
+              <i class="bi bi-geo-alt-fill text-danger me-1"></i> La Réunion · Académie U21
+            </span>
             
-            <h1 class="display-5 fw-bold text-white mb-3 hero-text-shadow" style="letter-spacing: -0.03em;">
-              L'Élite Étudiante du Basket Péi.
+            <h1 class="hero-headline mb-3">
+              Détection Pôle Espoirs : fiches d'évaluation de la promotion 2026.
             </h1>
             
-            <p class="fs-5 hero-lead-shadow mb-4" style="line-height: 1.55;">
-              Formation intensive, potentiel athlétique et rigueur tactique. Explorez le profil complet de nos étudiants réunionnais, leurs mensurations et leurs taux d'aptitude au basket.
+            <p class="hero-standfirst mb-4">
+              Relevé officiel des 12 espoirs réunionnais suivis par l'académie régionale : profil morphologique, clubs formateurs et indices d'aptitude au tir et au jeu.
             </p>
             
             <!-- CTA À GAUCHE -->
             <div>
-              <a href="#tableau-etudiants" class="btn-ios-pill-primary interactive-cta">
-                <i class="bi bi-people-fill"></i> Consulter la Liste des Étudiants
+              <a href="#tableau-etudiants" class="btn-editorial-primary interactive-cta">
+                <i class="bi bi-people-fill"></i> Consulter les 12 Fiches Profils
               </a>
             </div>
           </div>
 
           <!-- CONTENU DROITE AVEC CTA DROITE -->
-          <div class="col-lg-5 col-xl-5 text-lg-end hero-fade-in" style="animation-delay: 0.25s;">
+          <div class="col-lg-5 col-xl-5 text-lg-end">
             <div class="d-inline-block text-start mb-4">
-              <div class="text-white-50 text-uppercase small fw-bold mb-3 text-lg-end" style="letter-spacing: 0.08em;">
-                Promotion & Moyennes
+              <div class="editorial-label mb-3 text-lg-end d-block">
+                Moyennes Promotion 2026
               </div>
               
-              <!-- Indicateurs avec compteurs animés JS -->
               <div class="d-flex flex-wrap gap-3 justify-content-lg-end">
-                <div class="open-stat-item text-center interactive-tilt">
-                  <span class="d-block fw-bold fs-4 text-white stat-num" data-target="12" data-decimals="0">0</span>
-                  <span class="text-white-50 small stat-lbl">Étudiants</span>
+                <div class="stat-badge-open text-center interactive-tilt">
+                  <span class="d-block fw-bold fs-4 text-white stat-val stat-num" data-target="12" data-decimals="0">0</span>
+                  <span class="text-white-50 small stat-lbl">Profils Suivis</span>
                 </div>
-                <div class="open-stat-item text-center interactive-tilt">
-                  <span class="d-block fw-bold fs-4 text-white stat-num" data-target="1.95" data-decimals="2">0.00</span>
-                  <span class="text-white-50 small stat-lbl">Taille Moy. (m)</span>
+                <div class="stat-badge-open text-center interactive-tilt">
+                  <span class="d-block fw-bold fs-4 text-white stat-val stat-num" data-target="1.95" data-decimals="2">0.00</span>
+                  <span class="text-white-50 small stat-lbl">Taille Moyenne (m)</span>
                 </div>
-                <div class="open-stat-item text-center interactive-tilt">
-                  <span class="d-block fw-bold fs-4 text-white stat-num" data-target="91.5" data-decimals="1">0.0</span>
-                  <span class="text-white-50 small stat-lbl">Aptitude Moy. %</span>
+                <div class="stat-badge-open text-center interactive-tilt">
+                  <span class="d-block fw-bold fs-4 text-white stat-val stat-num" data-target="91.5" data-decimals="1">0.0</span>
+                  <span class="text-white-50 small stat-lbl">Indice Moyen %</span>
                 </div>
               </div>
             </div>
 
-            <!-- CTA À DROITE : RETOUR VERS LA PAGE PRINCIPALE NBA -->
+            <!-- CTA À DROITE -->
             <div>
-              <a href="DemoBoostStrap.html" class="btn-ios-pill-glass interactive-cta">
-                <i class="bi bi-arrow-left-circle text-warning"></i> Retour aux Matchs NBA
+              <a href="DemoBoostStrap.html" class="btn-editorial-secondary interactive-cta">
+                <i class="bi bi-arrow-left"></i> Retour aux Matchs NBA
               </a>
             </div>
           </div>
 
         </div>
       </div>
-
-      <!-- Bouton d'indication de scroll vers le bas -->
-      <div class="text-center hero-fade-in" style="animation-delay: 0.4s;">
-        <a href="#tableau-etudiants" class="scroll-pill-hint interactive-cta">
-          <span>Voir les profils des étudiants</span>
-          <i class="bi bi-arrow-down-short fs-5"></i>
-        </a>
-      </div>
-
     </header>
 
-    <!-- SECTION TABLEAU DES ÉTUDIANTS RÉUNIONNAIS (SANS AUCUNE CARD) -->
+    <!-- SECTION TABLEAU DES ÉTUDIANTS OUVERT (ZÉRO CARDS) -->
     <main id="tableau-etudiants" class="w-100 px-3 px-md-5 py-5">
       <div class="container-fluid px-lg-5">
         
-        <!-- En-tête de section ouvert -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4 pb-3 border-bottom reveal-item">
           <div>
-            <span class="text-uppercase small text-secondary fw-bold" style="letter-spacing: 0.08em; font-size: 0.75rem;">
-              Promotion Académie 2026
-            </span>
-            <h2 class="h3 fw-bold text-dark mb-1">Liste des Étudiants Réunionnais</h2>
-            <p class="text-secondary small mb-0">Données mocks des talents péi : mensurations et aptitudes mesurées</p>
+            <span class="editorial-label text-secondary mb-1">Effectif Régional</span>
+            <h2 class="h3 fw-bold mb-1">Liste d'Évaluation des Étudiants Réunionnais</h2>
+            <p class="text-muted small mb-0">Données de tests physiques et d'aptitude technique au panier</p>
           </div>
           <div class="d-flex gap-2">
-            <span class="badge bg-white text-secondary border px-3 py-2 rounded-pill fw-medium">
-              <i class="bi bi-geo-fill text-danger me-1"></i> La Réunion (974)
-            </span>
-            <span class="badge bg-white text-secondary border px-3 py-2 rounded-pill fw-medium">
-              12 Profils
+            <span class="badge border rounded-pill px-3 py-2 fw-medium">
+              <i class="bi bi-award text-primary me-1"></i> Promotion 2026
             </span>
           </div>
         </div>
 
-        <!-- Tableau aéré et ouvert à 4 colonnes (Nom Prénoms, Âge, Taille, Aptitude au basket) -->
         <div class="table-responsive">
-          <table class="table table-open align-middle">
+          <table class="table table-editorial align-middle">
             <thead>
               <tr class="reveal-item">
                 <th scope="col" style="width: 34%;">Nom & Prénoms</th>
@@ -493,18 +461,18 @@
               
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">PAYET Jean-Baptiste</div>
-                  <div class="text-secondary small">Saint-Denis · Arrière / Meneur</div>
+                  <div class="fw-bold fs-6">PAYET Jean-Baptiste</div>
+                  <div class="text-muted small">Saint-Denis · Arrière / Meneur</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   20 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m96</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m96</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">94%</span>
+                    <span class="fw-bold">94%</span>
                     <span class="text-muted small">Tir clutch & vitesse</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -515,18 +483,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">HOARAU Maxime</div>
-                  <div class="text-secondary small">Saint-Pierre · Meneur de jeu</div>
+                  <div class="fw-bold fs-6">HOARAU Maxime</div>
+                  <div class="text-muted small">Saint-Pierre · Meneur de jeu</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   19 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m91</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m91</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">88%</span>
+                    <span class="fw-bold">88%</span>
                     <span class="text-muted small">Agilité & passes</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -537,18 +505,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">FONTAINE Lucas</div>
-                  <div class="text-secondary small">Saint-Paul · Pivot / Ailier fort</div>
+                  <div class="fw-bold fs-6">FONTAINE Lucas</div>
+                  <div class="text-muted small">Saint-Paul · Pivot / Ailier fort</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   21 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">2m03</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">2m03</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">96%</span>
+                    <span class="fw-bold">96%</span>
                     <span class="text-muted small">Rebonds & envergure</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -559,18 +527,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">GRONDIN Mathias</div>
-                  <div class="text-secondary small">Le Tampon · Arrière shooteur</div>
+                  <div class="fw-bold fs-6">GRONDIN Mathias</div>
+                  <div class="text-muted small">Le Tampon · Arrière shooteur</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   22 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m88</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m88</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">85%</span>
+                    <span class="fw-bold">85%</span>
                     <span class="text-muted small">Tir à longue distance</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -581,18 +549,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">TÉCHER Noah</div>
-                  <div class="text-secondary small">Saint-Leu · Ailier polyvalent</div>
+                  <div class="fw-bold fs-6">TÉCHER Noah</div>
+                  <div class="text-muted small">Saint-Leu · Ailier polyvalent</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   19 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m94</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m94</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">91%</span>
+                    <span class="fw-bold">91%</span>
                     <span class="text-muted small">Défense tout-terrain</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -603,18 +571,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">RIVIÈRE Dylan</div>
-                  <div class="text-secondary small">Saint-Benoît · Ailier fort</div>
+                  <div class="fw-bold fs-6">RIVIÈRE Dylan</div>
+                  <div class="text-muted small">Saint-Benoît · Ailier fort</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   20 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m98</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m98</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">92%</span>
+                    <span class="fw-bold">92%</span>
                     <span class="text-muted small">Pénétration & puissance</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -625,19 +593,19 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">BOYER Romain</div>
-                  <div class="text-secondary small">La Possession · Meneur rapide</div>
+                  <div class="fw-bold fs-6">BOYER Romain</div>
+                  <div class="text-muted small">La Possession · Meneur rapide</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   21 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m85</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m85</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">87%</span>
-                    <span class="text-muted small">Interceptions & contre-attaque</span>
+                    <span class="fw-bold">87%</span>
+                    <span class="text-muted small">Interceptions & transition</span>
                   </div>
                   <div class="aptitude-bar-bg">
                     <div class="aptitude-bar-fill" style="width: 87%;"></div>
@@ -647,18 +615,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">BEGUE Kenji</div>
-                  <div class="text-secondary small">Sainte-Marie · Pivot protecteur de cercle</div>
+                  <div class="fw-bold fs-6">BEGUE Kenji</div>
+                  <div class="text-muted small">Sainte-Marie · Pivot protecteur</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   22 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">2m01</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">2m01</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">95%</span>
+                    <span class="fw-bold">95%</span>
                     <span class="text-muted small">Contres & présence physique</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -669,18 +637,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">MAILLOT Yanis</div>
-                  <div class="text-secondary small">Saint-Joseph · Arrière athlétique</div>
+                  <div class="fw-bold fs-6">MAILLOT Yanis</div>
+                  <div class="text-muted small">Saint-Joseph · Arrière athlétique</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   19 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m90</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m90</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">89%</span>
+                    <span class="fw-bold">89%</span>
                     <span class="text-muted small">Détente verticale & finitions</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -691,18 +659,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">DIJOUX Enzo</div>
-                  <div class="text-secondary small">Saint-André · Ailier tireur d'élite</div>
+                  <div class="fw-bold fs-6">DIJOUX Enzo</div>
+                  <div class="text-muted small">Saint-André · Ailier shooteur</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   20 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m97</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m97</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">93%</span>
+                    <span class="fw-bold">93%</span>
                     <span class="text-muted small">Régularité à 3 points</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -713,18 +681,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">LEBON Cédric</div>
-                  <div class="text-secondary small">Le Port · Pivot dominant</div>
+                  <div class="fw-bold fs-6">LEBON Cédric</div>
+                  <div class="text-muted small">Le Port · Pivot dominant</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   23 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">2m05</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">2m05</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">97%</span>
+                    <span class="fw-bold">97%</span>
                     <span class="text-muted small">Impact dans la raquette</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -735,18 +703,18 @@
 
               <tr class="reveal-item">
                 <td>
-                  <div class="fw-bold text-dark fs-6">ETHÈVE Mathis</div>
-                  <div class="text-secondary small">Sainte-Suzanne · Meneur explosif</div>
+                  <div class="fw-bold fs-6">ETHÈVE Mathis</div>
+                  <div class="text-muted small">Sainte-Suzanne · Meneur explosif</div>
                 </td>
-                <td class="text-center fw-semibold text-secondary">
+                <td class="text-center fw-semibold text-muted">
                   18 ans
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-white text-dark border px-3 py-1 rounded-pill fw-bold">1m86</span>
+                  <span class="badge border rounded-pill px-3 py-1 fw-bold">1m86</span>
                 </td>
                 <td>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark">90%</span>
+                    <span class="fw-bold">90%</span>
                     <span class="text-muted small">Vitesse d'exécution & vision</span>
                   </div>
                   <div class="aptitude-bar-bg">
@@ -759,16 +727,14 @@
           </table>
         </div>
 
-        <!-- Bouton retour vers la page d'accueil NBA -->
         <div class="text-center mt-5 pt-3">
-          <a href="DemoBoostStrap.html" class="btn-ios-pill-primary interactive-cta">
-            <i class="bi bi-arrow-left"></i> Retour aux Matchs & Scores NBA
+          <a href="DemoBoostStrap.html" class="btn-editorial-primary interactive-cta">
+            <i class="bi bi-arrow-left"></i> Retour aux Matchs & Boxscores NBA
           </a>
         </div>
 
-        <!-- Pied de page épuré -->
-        <div class="text-center text-secondary small mt-4 pt-3">
-          Bootstrap 5.3.8 · Académie Basket Réunion · Interface ouverte sans cards · Animations JS iOS
+        <div class="text-center text-muted small mt-4 pt-3">
+          Bootstrap 5.3.8 · Académie Basket Réunion · Mode Sombre & Fiches Évaluation
         </div>
 
       </div>
@@ -777,11 +743,44 @@
     <!-- Bootstrap 5.3.8 Bundle JS (Règle obligatoire) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-    <!-- ANIMATIONS JS POUR L'UI & UX (Survol, Tilt 3D, Spotlight Verre, Parallaxe, Compteurs, Scroll Reveal) -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        
-        // 1. REFLET LUMINEUX DE VERRE DYNAMIQUE SUR LES CTA (Spotlight Mouse Tracking)
+
+        // 1. GESTION DU MODE SOMBRE / CLAIR AVEC CHANGEMENT D'IMAGES DYNAMIQUE
+        const htmlElement = document.documentElement;
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const heroSection = document.getElementById('hero');
+
+        const savedTheme = localStorage.getItem('theme') || 
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        const applyTheme = (theme) => {
+          htmlElement.setAttribute('data-bs-theme', theme);
+          localStorage.setItem('theme', theme);
+
+          if (theme === 'dark') {
+            themeIcon.className = 'bi bi-sun-fill text-warning';
+            if (heroSection) {
+              heroSection.style.backgroundImage = `url('${heroSection.getAttribute('data-dark-bg')}')`;
+            }
+          } else {
+            themeIcon.className = 'bi bi-moon-stars-fill';
+            if (heroSection) {
+              heroSection.style.backgroundImage = `url('${heroSection.getAttribute('data-light-bg')}')`;
+            }
+          }
+        };
+
+        applyTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = htmlElement.getAttribute('data-bs-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          applyTheme(newTheme);
+        });
+
+        // 2. REFLET LUMINEUX DE VERRE (Spotlight Mouse Tracking)
         const interactiveCtas = document.querySelectorAll('.interactive-cta');
         interactiveCtas.forEach(cta => {
           cta.addEventListener('mousemove', (e) => {
@@ -793,8 +792,8 @@
 
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const tiltX = ((y - centerY) / centerY) * -5;
-            const tiltY = ((x - centerX) / centerX) * 5;
+            const tiltX = ((y - centerY) / centerY) * -4;
+            const tiltY = ((x - centerX) / centerX) * 4;
             cta.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
           });
 
@@ -803,7 +802,7 @@
           });
         });
 
-        // 2. INCLINAISON 3D TILT SUR LES INDICATEURS STATS
+        // 3. INCLINAISON 3D TILT SUR LES BADGES STATS
         const tiltItems = document.querySelectorAll('.interactive-tilt');
         tiltItems.forEach(item => {
           item.addEventListener('mousemove', (e) => {
@@ -812,9 +811,9 @@
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const tiltX = ((y - centerY) / centerY) * -8;
-            const tiltY = ((x - centerX) / centerX) * 8;
-            item.style.transform = `perspective(500px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`;
+            const tiltX = ((y - centerY) / centerY) * -6;
+            const tiltY = ((x - centerX) / centerX) * 6;
+            item.style.transform = `perspective(500px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-3px)`;
           });
 
           item.addEventListener('mouseleave', () => {
@@ -822,28 +821,13 @@
           });
         });
 
-        // 3. PARALLAXE DOUCE SUR LE HÉRO AU MOUVEMENT DE LA SOURIS
-        const heroSection = document.getElementById('hero');
-        if (heroSection) {
-          heroSection.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const xOffset = (clientX / window.innerWidth - 0.5) * 8;
-            const yOffset = (clientY / window.innerHeight - 0.5) * 8;
-            heroSection.style.backgroundPosition = `calc(50% + ${xOffset}px) calc(50% + ${yOffset}px)`;
-          });
-
-          heroSection.addEventListener('mouseleave', () => {
-            heroSection.style.backgroundPosition = 'center';
-          });
-        }
-
         // 4. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
         const animateCounters = () => {
           const counters = document.querySelectorAll('.stat-num');
           counters.forEach(counter => {
             const target = parseFloat(counter.getAttribute('data-target'));
             const decimals = parseInt(counter.getAttribute('data-decimals'), 10) || 0;
-            const duration = 1400;
+            const duration = 1200;
             const startTime = performance.now();
 
             const updateNumber = (currentTime) => {
@@ -863,9 +847,9 @@
             requestAnimationFrame(updateNumber);
           });
         };
-        setTimeout(animateCounters, 350);
+        setTimeout(animateCounters, 200);
 
-        // 5. APPARITION FLUIDE AU DÉFILEMENT (Scroll Reveal)
+        // 5. SCROLL REVEAL VIA INTERSECTION OBSERVER
         const revealItems = document.querySelectorAll('.reveal-item');
         const revealObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
@@ -880,11 +864,11 @@
         });
 
         revealItems.forEach((item, index) => {
-          item.style.transitionDelay = `${(index % 8) * 65}ms`;
+          item.style.transitionDelay = `${(index % 8) * 60}ms`;
           revealObserver.observe(item);
         });
 
-        // 6. ADAPTATION DYNAMIQUE DE LA NAVBAR TRANSPARENTE AU SCROLL
+        // 6. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {
