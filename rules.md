@@ -6,7 +6,7 @@ Ces règles s'appliquent automatiquement à l'assistant et aux contributeurs de 
 
 ## Dépôt distant configuré
 - **Remote `origin`** : `https://github.com/Farad77/ExpernetCDA10.git`
-- **Branche principale** : `master` (ou `main` selon convention)
+- **Branche de travail** : `Ryoxiis-Project`
 
 ---
 
