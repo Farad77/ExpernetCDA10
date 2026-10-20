@@ -164,7 +164,7 @@
         box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32), inset 0 1px 2px rgba(255, 255, 255, 1);
       }
 
-      /* Reflet lumineux dynamique survolé par le curseur (effet spot verre iOS) */
+      /* Reflet lumineux dynamique survolé par le curseur */
       .interactive-cta::after {
         content: '';
         position: absolute;
@@ -182,7 +182,7 @@
         opacity: 1;
       }
 
-      /* Indicateurs statistiques ouverts avec effet verre et inclinaison tilt JS */
+      /* Indicateurs statistiques ouverts */
       .open-stat-item {
         background: rgba(0, 0, 0, 0.25);
         backdrop-filter: blur(14px);
@@ -229,7 +229,7 @@
         transform: translateY(-2px);
       }
 
-      /* TABLEAU SANS CARDS AVEC ANIMATION REVEAL ET EFFET SPOTLIGHT JS */
+      /* TABLEAU SANS CARDS */
       .table-open {
         --bs-table-bg: transparent;
         border-collapse: separate;
@@ -262,7 +262,6 @@
         border-bottom-right-radius: 1rem;
       }
 
-      /* Animation d'apparition par scroll pour les lignes (Reveal effect) */
       .reveal-item {
         opacity: 0;
         transform: translateY(22px);
@@ -274,7 +273,6 @@
         transform: translateY(0);
       }
 
-      /* Effet Verre iOS avec brillance fluide au survol */
       .table-open tbody tr {
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         cursor: default;
@@ -296,13 +294,42 @@
         letter-spacing: 0.03em;
       }
 
-      /* Animation d'entrée au chargement pour la section héro */
       .hero-fade-in {
         animation: heroFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
       @keyframes heroFade {
         from { opacity: 0; transform: translateY(18px); }
         to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* SECTION PARALLAXE BASKETBALL JUSTE EN DESSOUS DU TABLEAU */
+      .parallax-basket-section {
+        position: relative;
+        min-height: 520px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 2rem;
+        margin: 4rem 1.5rem 2rem 1.5rem;
+      }
+      .parallax-basket-bg {
+        position: absolute;
+        top: -25%;
+        left: 0;
+        width: 100%;
+        height: 150%;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/aa/2011-06-07_Basketball_in_hoop_still_shot.jpg');
+        background-size: cover;
+        background-position: center;
+        will-change: transform;
+        pointer-events: none;
+      }
+      .parallax-content {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+        margin: 0 auto;
       }
     </style>
   </head>
@@ -317,9 +344,10 @@
       <div class="d-none d-md-flex align-items-center gap-4">
         <a href="#hero" class="text-secondary text-decoration-none small fw-semibold">Accueil</a>
         <a href="#tableau" class="text-secondary text-decoration-none small fw-semibold">Résultats</a>
-        <a href="#tableau" class="text-secondary text-decoration-none small fw-semibold">MVP</a>
+        <a href="#academie" class="text-secondary text-decoration-none small fw-semibold">Académie</a>
+        <a href="etudiants.html" class="text-primary text-decoration-none small fw-semibold"><i class="bi bi-people me-1"></i>Étudiants Réunion</a>
       </div>
-      <a href="#tableau" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Explorer</a>
+      <a href="etudiants.html" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Voir la Relève</a>
     </nav>
 
     <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - AUCUNE CARD -->
@@ -535,6 +563,28 @@
           </table>
         </div>
 
+        <!-- NOUVELLE SECTION PARALLAXE AVEC IMAGE DE BASKETBALL ET BOUTON VERS LA PAGE ÉTUDIANTS -->
+        <section class="parallax-basket-section" id="academie">
+          <div class="parallax-basket-bg" id="parallaxBg"></div>
+          <div class="parallax-content text-center px-4 py-5">
+            <div class="open-badge mb-3">
+              <i class="bi bi-geo-alt-fill text-danger"></i>
+              <span>Académie Espoirs · Île de La Réunion</span>
+            </div>
+            <h2 class="display-6 fw-bold text-white mb-3 hero-text-shadow">
+              La Relève du Basket Réunionnais
+            </h2>
+            <p class="fs-5 hero-lead-shadow mb-4" style="line-height: 1.6;">
+              Découvrez la génération montante d'étudiants réunionnais formés au tir, au physique et à la vision du jeu. Explorez leurs mensurations précises et leurs aptitudes mesurées.
+            </p>
+            <div class="pt-2">
+              <a href="etudiants.html" class="btn-ios-pill-primary interactive-cta">
+                <i class="bi bi-people-fill"></i> Découvrir la Liste des Étudiants Réunionnais
+              </a>
+            </div>
+          </div>
+        </section>
+
         <!-- Pied de page épuré -->
         <div class="text-center text-secondary small mt-5 pt-3">
           Bootstrap 5.3.8 · Interface ouverte sans cards · Animations JS & Effets iOS
@@ -607,7 +657,22 @@
           });
         }
 
-        // 4. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
+        // 4. EFFET DE PARALLAXE AU SCROLL POUR LA SECTION BASKETBALL
+        const parallaxBg = document.getElementById('parallaxBg');
+        const academieSection = document.getElementById('academie');
+        if (parallaxBg && academieSection) {
+          window.addEventListener('scroll', () => {
+            const rect = academieSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            if (rect.top <= windowHeight && rect.bottom >= 0) {
+              const distance = (windowHeight - rect.top) / (windowHeight + rect.height);
+              const yTranslate = (distance - 0.5) * 60; // Déplacement parallaxe fluide
+              parallaxBg.style.transform = `translateY(${yTranslate}px)`;
+            }
+          }, { passive: true });
+        }
+
+        // 5. ANIMATION DES COMPTEURS NUMÉRIQUES (CountUp)
         const animateCounters = () => {
           const counters = document.querySelectorAll('.stat-num');
           counters.forEach(counter => {
@@ -619,7 +684,6 @@
             const updateNumber = (currentTime) => {
               const elapsed = currentTime - startTime;
               const progress = Math.min(elapsed / duration, 1);
-              // Fonction d'assouplissement easeOutCubic
               const easeProgress = 1 - Math.pow(1 - progress, 3);
               const currentVal = easeProgress * target;
               counter.textContent = currentVal.toFixed(decimals);
@@ -634,10 +698,9 @@
             requestAnimationFrame(updateNumber);
           });
         };
-        // Lancer les compteurs avec un léger délai élégant
         setTimeout(animateCounters, 350);
 
-        // 5. APPARITION FLUIDE AU DÉFILEMENT (Scroll Reveal avec IntersectionObserver)
+        // 6. APPARITION FLUIDE AU DÉFILEMENT (Scroll Reveal avec IntersectionObserver)
         const revealItems = document.querySelectorAll('.reveal-item');
         const revealObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
@@ -652,12 +715,11 @@
         });
 
         revealItems.forEach((item, index) => {
-          // Cascade élégante (stagger) pour l'apparition des lignes
           item.style.transitionDelay = `${(index % 8) * 85}ms`;
           revealObserver.observe(item);
         });
 
-        // 6. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
+        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {
