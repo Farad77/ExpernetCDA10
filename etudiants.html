@@ -32,8 +32,8 @@
         overflow-x: hidden;
       }
 
-      /* Navigation flottante style iOS */
-      .ios-nav-open {
+      /* BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS */
+      .ios-nav-transparent {
         position: fixed;
         top: 1.25rem;
         left: 50%;
@@ -41,18 +41,74 @@
         z-index: 1040;
         width: calc(100% - 3rem);
         max-width: 1240px;
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(24px) saturate(190%);
-        -webkit-backdrop-filter: blur(24px) saturate(190%);
-        border: 1px solid rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(18px) saturate(180%);
+        -webkit-backdrop-filter: blur(18px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 999px;
         padding: 0.75rem 2rem;
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .ios-nav-open.scrolled {
-        background: rgba(255, 255, 255, 0.88);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      .ios-nav-transparent:hover {
+        background: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      }
+
+      .nav-brand-text {
+        color: #ffffff;
+        font-weight: 700;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        transition: color 0.25s ease;
+      }
+      .nav-link-item {
+        color: rgba(255, 255, 255, 0.88);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+      .nav-link-item:hover {
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+      .nav-cta-btn {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        transition: all 0.25s ease;
+      }
+      .nav-cta-btn:hover {
+        background: #ffffff;
+        color: #000000;
         border-color: #ffffff;
+      }
+
+      .ios-nav-transparent.scrolled {
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(28px) saturate(200%);
+        -webkit-backdrop-filter: blur(28px) saturate(200%);
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      .ios-nav-transparent.scrolled .nav-brand-text {
+        color: #111111;
+        text-shadow: none;
+      }
+      .ios-nav-transparent.scrolled .nav-link-item {
+        color: #555555;
+        text-shadow: none;
+      }
+      .ios-nav-transparent.scrolled .nav-link-item:hover {
+        color: #000000;
+      }
+      .ios-nav-transparent.scrolled .nav-cta-btn {
+        background: #111111;
+        color: #ffffff;
+        border-color: #111111;
       }
 
       /* Section Héro Plein Écran (100vh) SANS OVERLAY et SANS CARDS */
@@ -285,7 +341,6 @@
         transform: translateY(-2px);
       }
 
-      /* Barre de progression d'aptitude style iOS */
       .aptitude-bar-bg {
         height: 6px;
         background-color: rgba(0, 0, 0, 0.06);
@@ -311,18 +366,18 @@
   </head>
   <body>
 
-    <!-- Barre de navigation flottante -->
-    <nav class="ios-nav-open d-flex justify-content-between align-items-center" id="mainNav">
+    <!-- BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS -->
+    <nav class="ios-nav-transparent d-flex justify-content-between align-items-center" id="mainNav">
       <div class="d-flex align-items-center gap-2">
         <span class="badge rounded-circle bg-dark p-2 text-white"><i class="bi bi-mortarboard"></i></span>
-        <span class="fw-bold text-dark">Académie Basket 974</span>
+        <span class="nav-brand-text">Académie Basket 974</span>
       </div>
       <div class="d-none d-md-flex align-items-center gap-4">
-        <a href="DemoBoostStrap.html" class="text-secondary text-decoration-none small fw-semibold"><i class="bi bi-arrow-left me-1"></i>Matchs NBA</a>
-        <a href="#hero" class="text-secondary text-decoration-none small fw-semibold">Accueil</a>
-        <a href="#tableau-etudiants" class="text-primary text-decoration-none small fw-semibold">Liste des Étudiants</a>
+        <a href="DemoBoostStrap.html" class="nav-link-item"><i class="bi bi-arrow-left me-1"></i>Matchs NBA</a>
+        <a href="#hero" class="nav-link-item">Accueil</a>
+        <a href="#tableau-etudiants" class="nav-link-item text-warning">Liste des Étudiants</a>
       </div>
-      <a href="DemoBoostStrap.html" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Retour NBA</a>
+      <a href="DemoBoostStrap.html" class="btn btn-sm nav-cta-btn rounded-pill px-3 py-1">Retour NBA</a>
     </nav>
 
     <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - AUCUNE CARD -->
@@ -829,7 +884,7 @@
           revealObserver.observe(item);
         });
 
-        // 6. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
+        // 6. ADAPTATION DYNAMIQUE DE LA NAVBAR TRANSPARENTE AU SCROLL
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {
@@ -843,4 +898,3 @@
     </script>
   </body>
 </html>
-

@@ -32,8 +32,8 @@
         overflow-x: hidden;
       }
 
-      /* Navigation aérée et ouverte style iOS */
-      .ios-nav-open {
+      /* BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS */
+      .ios-nav-transparent {
         position: fixed;
         top: 1.25rem;
         left: 50%;
@@ -41,18 +41,76 @@
         z-index: 1040;
         width: calc(100% - 3rem);
         max-width: 1240px;
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(24px) saturate(190%);
-        -webkit-backdrop-filter: blur(24px) saturate(190%);
-        border: 1px solid rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(18px) saturate(180%);
+        -webkit-backdrop-filter: blur(18px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 999px;
         padding: 0.75rem 2rem;
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .ios-nav-open.scrolled {
-        background: rgba(255, 255, 255, 0.88);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      .ios-nav-transparent:hover {
+        background: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Textes et liens dans la barre transparente sur le héros */
+      .nav-brand-text {
+        color: #ffffff;
+        font-weight: 700;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        transition: color 0.25s ease;
+      }
+      .nav-link-item {
+        color: rgba(255, 255, 255, 0.88);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+      .nav-link-item:hover {
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+      .nav-cta-btn {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        transition: all 0.25s ease;
+      }
+      .nav-cta-btn:hover {
+        background: #ffffff;
+        color: #000000;
         border-color: #ffffff;
+      }
+
+      /* État dynamique au défilement (scrolled) */
+      .ios-nav-transparent.scrolled {
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(28px) saturate(200%);
+        -webkit-backdrop-filter: blur(28px) saturate(200%);
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      .ios-nav-transparent.scrolled .nav-brand-text {
+        color: #111111;
+        text-shadow: none;
+      }
+      .ios-nav-transparent.scrolled .nav-link-item {
+        color: #555555;
+        text-shadow: none;
+      }
+      .ios-nav-transparent.scrolled .nav-link-item:hover {
+        color: #000000;
+      }
+      .ios-nav-transparent.scrolled .nav-cta-btn {
+        background: #111111;
+        color: #ffffff;
+        border-color: #111111;
       }
 
       /* Section Héro Plein Écran (100vh) SANS AUCUN OVERLAY et SANS CARDS */
@@ -63,7 +121,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* Image 4K pure sans filtre ni assombrissement */
         background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a6/Stephen_Curry_Shooting.jpg');
         background-size: cover;
         background-position: center 30%;
@@ -74,7 +131,6 @@
         transition: background-position 0.15s ease-out;
       }
 
-      /* Typographie ouverte et nette sur l'image */
       .hero-text-shadow {
         text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
       }
@@ -107,7 +163,7 @@
         border-color: #ffffff;
       }
 
-      /* CTA style iOS avec reflet dynamique JS et inclinaison 3D */
+      /* CTA style iOS interactifs */
       .interactive-cta {
         position: relative;
         overflow: hidden;
@@ -164,7 +220,6 @@
         box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32), inset 0 1px 2px rgba(255, 255, 255, 1);
       }
 
-      /* Reflet lumineux dynamique survolé par le curseur */
       .interactive-cta::after {
         content: '';
         position: absolute;
@@ -302,7 +357,7 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* SECTION PARALLAXE BASKETBALL JUSTE EN DESSOUS DU TABLEAU */
+      /* SECTION PARALLAXE BASKETBALL */
       .parallax-basket-section {
         position: relative;
         min-height: 520px;
@@ -335,19 +390,19 @@
   </head>
   <body>
 
-    <!-- Barre de navigation flottante ouverte et épurée -->
-    <nav class="ios-nav-open d-flex justify-content-between align-items-center" id="mainNav">
+    <!-- BARRE DE NAVIGATION AVEC EFFET TRANSPARENT STYLE IOS -->
+    <nav class="ios-nav-transparent d-flex justify-content-between align-items-center" id="mainNav">
       <div class="d-flex align-items-center gap-2">
         <span class="badge rounded-circle bg-dark p-2 text-white"><i class="bi bi-dribbble"></i></span>
-        <span class="fw-bold text-dark">NBA Highlights</span>
+        <span class="nav-brand-text">NBA Highlights</span>
       </div>
       <div class="d-none d-md-flex align-items-center gap-4">
-        <a href="#hero" class="text-secondary text-decoration-none small fw-semibold">Accueil</a>
-        <a href="#tableau" class="text-secondary text-decoration-none small fw-semibold">Résultats</a>
-        <a href="#academie" class="text-secondary text-decoration-none small fw-semibold">Académie</a>
-        <a href="etudiants.html" class="text-primary text-decoration-none small fw-semibold"><i class="bi bi-people me-1"></i>Étudiants Réunion</a>
+        <a href="#hero" class="nav-link-item">Accueil</a>
+        <a href="#tableau" class="nav-link-item">Résultats</a>
+        <a href="#academie" class="nav-link-item">Académie</a>
+        <a href="etudiants.html" class="nav-link-item text-warning"><i class="bi bi-people me-1"></i>Étudiants Réunion</a>
       </div>
-      <a href="etudiants.html" class="btn btn-sm btn-dark rounded-pill px-3 py-1">Voir la Relève</a>
+      <a href="etudiants.html" class="btn btn-sm nav-cta-btn rounded-pill px-3 py-1">Voir la Relève</a>
     </nav>
 
     <!-- SECTION HÉRO PLEIN ÉCRAN (100vh) - AUCUN OVERLAY - AUCUNE CARD -->
@@ -610,7 +665,6 @@
             cta.style.setProperty('--spotlight-x', `${x}px`);
             cta.style.setProperty('--spotlight-y', `${y}px`);
 
-            // Inclinaison 3D subtile style iOS / VisionOS
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             const tiltX = ((y - centerY) / centerY) * -5;
@@ -666,7 +720,7 @@
             const windowHeight = window.innerHeight;
             if (rect.top <= windowHeight && rect.bottom >= 0) {
               const distance = (windowHeight - rect.top) / (windowHeight + rect.height);
-              const yTranslate = (distance - 0.5) * 60; // Déplacement parallaxe fluide
+              const yTranslate = (distance - 0.5) * 60;
               parallaxBg.style.transform = `translateY(${yTranslate}px)`;
             }
           }, { passive: true });
@@ -719,7 +773,7 @@
           revealObserver.observe(item);
         });
 
-        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR AU SCROLL
+        // 7. ADAPTATION DYNAMIQUE DE LA NAVBAR TRANSPARENTE AU SCROLL
         const mainNav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
           if (window.scrollY > 40) {
