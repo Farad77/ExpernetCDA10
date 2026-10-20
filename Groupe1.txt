@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Le voyage de Chihiro
+=======
+Pirate des caraibe 1 2 3 4. Le 5? quel 5?
+>>>>>>> f3d39d0041dd2f44afda693e7ba6462286457121
