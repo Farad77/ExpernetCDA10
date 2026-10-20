@@ -42,11 +42,4 @@ Dès qu'un fichier est complété / finalisé :
 - **Framework CSS / JS obligatoire** : À chaque fois qu'il faut concevoir ou modifier l'UI et l'UX, utiliser obligatoirement **Bootstrap 5.3.8** :
   - CSS : `https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css`
   - JS : `https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js`
-
----
-
-## 3. Règles UI / UX
-- **Framework CSS / JS obligatoire** : À chaque fois qu'il faut concevoir ou modifier l'UI et l'UX, utiliser obligatoirement **Bootstrap 5.3.8** :
-  - CSS : `https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css`
-  - JS : `https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js`
-
+- **Bannissement des cards** : Les cards ne sont pas toujours la bonne solution et sont même à bannir si possible. Il faut concevoir des interfaces ouvertes, aérées et fluides sans boîtes rigides ni encadrements fermés. Privilégier la typographie, le rythme visuel, l'espace blanc et des séparateurs légers et élégants.
